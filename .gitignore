@@ -35,3 +35,8 @@ RootVision_manual.docx
 
 # Output exe (too large)
 dist/
+build/
+
+# Build scripts
+_build.py
+*.spec
