@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# PyInstaller
+*.spec
+*.manifest
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large template files
+软件用户手册模版.doc
+代码模板.rtf
+
+# Duplicate/generated docx
+RootVision_manual.docx
+用户手册.docx
+
+# Output exe (too large)
+dist/

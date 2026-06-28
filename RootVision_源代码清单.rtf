@@ -1,0 +1,1599 @@
+{\rtf1\adeflang1025\ansi\ansicpg936\uc2\adeff0\deff0
+{\fonttbl
+{\f0\fmodern\fcharset134\fprq1 SimHei;}
+{\f1\fmodern\fcharset0\fprq1 Courier New;}
+{\f2\fnil\fcharset134\fprq2 SimSun;}
+}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue128;\red128\green128\blue128;}
+\paperw11906\paperh16838
+\margl1440\margr1440\margt1440\margb1440
+{\header\pard\qc\f0\fs22 RootVision v1.0 \u28304?\u20195?\u30721?\u28165?\u21333?\par}
+{\footer\pard\qc\f2\fs20 \u31532? {\field{\*\fldinst PAGE}{\fldrslt 1}} \u-26507?\par}
+\pard\qc\sb3000\f0\fs40\b RootVision\u-248?\u26681?\u22270?\u20998?\u26512?\u-247?\par
+\pard\qc\f0\fs32 \u28304?\u20195?\u30721?\u28165?\u21333?\par
+\pard\qc\sb600\f2\fs24 \u-28817?\u20214?\u29256?\u26412?\u-230?v1.0\par
+\pard\qc\f2\fs24 \u25991?\u20214?\u-230?rootvision_core.py\par
+\pard\qc\f2\fs24 \u24635?\u-30644?\u25968?\u-230?1549 \u-30644?\par
+\pard\qc\f2\fs24 \u24635?\u-26507?\u25968?\u-230?31 \u-26507?\par
+\pard\qc\sb2000\f2\fs22 \u29992?\u20110?\u-28817?\u20214?\u-31657?\u20316?\u26435?\u30003?\u-29705?\u28304?\u20195?\u30721?\u20132?\u23384?\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0001  \cf1 #!/usr/bin/env python3\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0002  \cf1 # -*- coding: utf-8 -*-\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0003  \cf1 """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0004  \cf1 \u26681?\u22270?\u20998?\u26512? - RootVision\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0005  \cf1 \u29256?\u26412?: v1.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0006  \cf1 """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0007  \cf1 __version__ = "1.0"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0008  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0009  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0010  \cf1 #  \u26680?\u24515?\u20998?\u26512?\u24341?\u25806? - \u29992?\u20110?\u-28817?\u20214?\u-31657?\u20316?\u26435?\u30003?\u-29705?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0011  \cf1 #  Core Analysis Engine - For Software Copyright Registration\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0012  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0013  \cf1 import sys\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0014  \cf1 import os\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0015  \cf1 import json\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0016  \cf1 import csv\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0017  \cf1 import tkinter as tk\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0018  \cf1 from tkinter import ttk, filedialog, messagebox, scrolledtext, simpledialog\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0019  \cf1 from PIL import Image, ImageTk, ImageDraw, ImageFont\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0020  \cf1 import threading\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0021  \cf1 import queue\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0022  \cf1 import time\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0023  \cf1 from datetime import datetime\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0024  \cf1 import traceback\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0025  \cf1 import warnings\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0026  \cf1 import colorsys\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0027  \cf1 import itertools\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0028  \cf1 import math\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0029  \cf1 import numpy as np\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0030  \cf1 import multiprocessing\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0031  \cf1 from concurrent.futures import ProcessPoolExecutor, as_completed, TimeoutError\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0032  \cf1 import gc\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0033  \cf1 import psutil  # \u28155?\u21152?\u20869?\u23384?\u30417?\u25511?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0034  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0035  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0036  \cf1 # \u26816?\u26597?Python\u29256?\u26412?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0037  \cf1 def check_python_version():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0038  \cf1     """\u26816?\u26597?Python\u29256?\u26412?\u20860?\u23481?\u24615?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0039  \cf1     python_version = sys.version_info\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0040  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0041  \cf1     if python_version < (3, 8):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0042  \cf1         print(f"\u-29850?\u21578?: \u24403?\u21069?Python\u29256?\u26412? \{python_version.major\}.\{pytn_version.minor\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0043  \cf1         print("\u24314?\u-29778?\u21319?\u32423?\u21040?Python 3.8\u25110?\u26356?\u-25896?\u29256?\u26412?")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0044  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0045  \cf1     return True\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0046  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0047  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0048  \cf1 # \u26816?\u26597?\u24182?\u23548?\u20837?\u24517?\u-30335?\u30340?\u24211?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0049  \cf1 def check_dependencies():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0050  \cf1     """\u26816?\u26597?\u24182?\u23548?\u20837?\u20381?\u-29354?\u24211?"""\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0051  \cf1     required_libs = [\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0052  \cf1         ('opencv-python', 'cv2'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0053  \cf1         ('numpy', 'numpy'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0054  \cf1         ('scikit-image', 'skimage'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0055  \cf1         ('scipy', 'scipy'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0056  \cf1         ('matplotlib', 'matplotlib'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0057  \cf1         ('Pillow', 'PIL'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0058  \cf1         ('psutil', 'psutil')  # \u28155?\u21152?psutil\u29992?\u20110?\u20869?\u23384?\u30417?\u25511?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0059  \cf1     ]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0060  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0061  \cf1     missing_libs = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0062  \cf1     imported_modules = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0063  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0064  \cf1     for pip_name, import_name in required_libs:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0065  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0066  \cf1             if import_name == 'cv2':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0067  \cf1                 import cv2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0068  \cf1                 globals()['cv2'] = cv2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0069  \cf1                 imported_modules.append(('cv2', cv2))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0070  \cf1             elif import_name == 'numpy':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0071  \cf1                 import numpy as np\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0072  \cf1                 globals()['np'] = np\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0073  \cf1                 imported_modules.append(('numpy', np))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0074  \cf1             elif import_name == 'skimage':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0075  \cf1                 import skimage\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0076  \cf1                 from skimage import morphology, measure, segmentation, filters, color, draw\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0077  \cf1                 globals()['skimage'] = skimage\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0078  \cf1                 globals()['morphology'] = morphology\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0079  \cf1                 globals()['measure'] = measure\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0080  \cf1                 globals()['segmentation'] = segmentation\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0081  \cf1                 globals()['filters'] = filters\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0082  \cf1                 globals()['color'] = color\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0083  \cf1                 globals()['draw'] = draw\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0084  \cf1                 imported_modules.append(('skimage', skimage))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0085  \cf1             elif import_name == 'scipy':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0086  \cf1                 from scipy import ndimage, spatial\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0087  \cf1                 globals()['ndimage'] = ndimage\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0088  \cf1                 globals()['spatial'] = spatial\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0089  \cf1                 imported_modules.append(('scipy', ndimage))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0090  \cf1             elif import_name == 'matplotlib':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0091  \cf1                 import matplotlib\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0092  \cf1                 matplotlib.use('Agg')  # \u20351?\u29992?\u-26786?GUI\u21518?\u31471?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0093  \cf1                 import matplotlib.pyplot as plt\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0094  \cf1                 import matplotlib.patches as patches\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0095  \cf1                 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0096  \cf1                 globals()['plt'] = plt\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0097  \cf1                 globals()['patches'] = patches\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0098  \cf1                 globals()['FigureCanvasTkAgg'] = FigureCanvasTkAgg\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0099  \cf1                 imported_modules.append(('matplotlib', matplotlib))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0100  \cf1             elif import_name == 'PIL':\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0101  \cf1                 # PIL\u24050?\u32463?\u23548?\u20837?\u-244?\u-28711?\u-28212?\u21482?\u26159?\u30830?\u-29788?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0102  \cf1                 imported_modules.append(('PIL', 'Image/ImageTk'))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0103  \cf1             elif import_name == 'psutil':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0104  \cf1                 import psutil\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0105  \cf1                 globals()['psutil'] = psutil\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0106  \cf1                 imported_modules.append(('psutil', psutil))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0107  \cf1         except ImportError as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0108  \cf1             missing_libs.append(pip_name)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0109  \cf1             print(f"\u23548?\u20837?\{import_name\}\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0110  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0111  \cf1             print(f"\u23548?\u20837?\{import_name\}\u26102?\u21457?\u29983?\u20854?\u20182?\u-27367?\u-29713?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0112  \cf1             missing_libs.append(pip_name)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0113  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0114  \cf1     # \u-29762?\u32622?\u-29850?\u21578?\u-28729?\u28388?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0115  \cf1     warnings.filterwarnings('ignore', category=UserWarning)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0116  \cf1     warnings.filterwarnings('ignore', category=FutureWarning)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0117  \cf1     warnings.filterwarnings('ignore', category=DeprecationWarning)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0118  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0119  \cf1     return missing_libs, imported_modules\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0120  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0121  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0122  \cf1 # \u26816?\u26597?\u21644?\u20462?\u22797?\u20860?\u23481?\u24615?\u-27154?\u-26472?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0123  \cf1 check_python_version()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0124  \cf1 missing_libs, imported_modules = check_dependencies()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0125  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0126  \cf1 if missing_libs:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0127  \cf1     print(f"\u32570?\u23569?\u24517?\u-30335?\u30340?\u24211?: \{', '.join(missing_libs)\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0128  \cf1     print("\u-29705?\u-28720?\u-30644?: pip install " + " ".join(missing_libs))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0129  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0130  \cf1     # \u21019?\u24314?\u31616?\u21333?\u30340?\u-27367?\u-29713?\u31383?\u21475?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0131  \cf1     try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0132  \cf1         error_root = tk.Tk()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0133  \cf1         error_root.withdraw()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0134  \cf1         messagebox.showerror(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0135  \cf1             "\u32570?\u23569?\u20381?\u-29354?\u24211?",\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0136  \cf1             f"\u32570?\u23569?\u20197?\u19979?\u24517?\u-30335?\u30340?Python\u24211?:\\n\\n\{', '.join(missing_libs)\}\\n\\n"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0137  \cf1             f"\u-29705?\u-28720?\u-30644?\u23433?\u-30523?\u-32486?\u26412?:\\n\\n"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0138  \cf1             f"pip install \{' '.join(missing_libs)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0139  \cf1         )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0140  \cf1         error_root.destroy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0141  \cf1     except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0142  \cf1         pass\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0143  \cf1     sys.exit(1)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0144  \cf1 else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0145  \cf1     print("\u25152?\u26377?\u20381?\u-29354?\u24211?\u24050?\u25104?\u21151?\u23548?\u20837?:")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0146  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0147  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0148  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0149  \cf1 class RootSystemAnalyzer:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0150  \cf1     """\u26681?\u31995?\u20998?\u26512?\u22120?\u26680?\u24515?\u31867?"""\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0151  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0152  \cf1     # \u-24872?\u-29788?\u26681?\u31995?\u30452?\u24452?\u20998?\u32423?\u26631?\u20934? (name, min_mm, max_mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0153  \cf1     DEFAULT_DIAMETER_CLASSES = [\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0154  \cf1         ('\u-29307?\u32454?\u26681?', 0.0, 0.5),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0155  \cf1         ('\u32454?\u26681?',   0.5, 1.0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0156  \cf1         ('\u20013?\u26681?',   1.0, 2.0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0157  \cf1         ('\u31895?\u26681?',   2.0, 5.0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0158  \cf1         ('\u-29307?\u31895?\u26681?', 5.0, float('inf')),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0159  \cf1     ]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0160  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0161  \cf1     def __init__(self, pixel_to_mm=0.1):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0162  \cf1         self.pixel_to_mm = pixel_to_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0163  \cf1         self.results = \{\}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0164  \cf1         self.analysis_history = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0165  \cf1         self.scale_bar_length_mm = 10  # \u-24872?\u-29788?\u27604?\u20363?\u23610?\u-27265?\u24230?(mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0166  \cf1         self.scale_bar_position = (50, 50)  # \u27604?\u20363?\u23610?\u20301?\u32622?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0167  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0168  \cf1         # \u31616?\u21270?\u-230?\u21482?\u20445?\u23384?\u-29791?\u25968?\u30456?\u20851?\u25968?\u25454?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0169  \cf1         self.root_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0170  \cf1         self.connected_components = []  # \u-28706?\u-28646?\u32452?\u20214?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0171  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0172  \cf1         # \u28155?\u21152?\u26681?\u31995?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0173  \cf1         self.root_parameters = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0174  \cf1             'total_length': 0.0,  # \u24635?\u26681?\u-27265?(mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0175  \cf1             'total_area': 0.0,  # \u24635?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0176  \cf1             'total_volume': 0.0,  # \u24635?\u26681?\u20307?\u31215?(mm\u179?)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0177  \cf1             'total_surface': 0.0,  # \u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0178  \cf1             'specific_root_length': 0.0,  # \u27604?\u26681?\u-27265?(mm/mm\u178?)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0179  \cf1             'avg_diameter': 0.0,  # \u24179?\u22343?\u26681?\u30452?\u24452?(mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0180  \cf1             'diameter_distribution': \{\}  # \u30452?\u24452?\u20998?\u24067?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0181  \cf1         \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0182  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0183  \cf1         # \u-28729?\u28388?\u32479?\u-29791?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0184  \cf1         self.filter_stats = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0185  \cf1             'total_regions': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0186  \cf1             'filtered_regions': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0187  \cf1             'removed_regions': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0188  \cf1             'removal_percentage': 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0189  \cf1         \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0190  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0191  \cf1         # \u25195?\u25551?\u22270?\u20687?\u19987?\u29992?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0192  \cf1         self.scan_params = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0193  \cf1             'is_scanned': False,  # \u26159?\u21542?\u20026?\u25195?\u25551?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0194  \cf1             'background_type': 'light',  # \u-32564?\u26223?\u31867?\u22411?\u-230?light/dark\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0195  \cf1             'scan_quality': 'high',  # \u25195?\u25551?\u-29400?\u-28209?\u-230?high/medium/low\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0196  \cf1             'resolution_dpi': 300,  # \u25195?\u25551?\u20998?\u-28760?\u29575?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0197  \cf1         \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0198  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0199  \cf1         # \u25195?\u25551?\u22270?\u20687?\u20248?\u21270?\u26631?\u24535?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0200  \cf1         self.use_scan_optimization = False\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0201  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0202  \cf1         # \u22270?\u20687?\u22686?\u24378?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0203  \cf1         self.enhance_method = 'adaptive'  # \u-24872?\u-29788?\u-32278?\u-28670?\u24212?\u22686?\u24378?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0204  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0205  \cf1         # \u25195?\u25551?\u22270?\u20687?\u22686?\u24378?\u26631?\u24535?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0206  \cf1         self.scan_enhanced = None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0207  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0208  \cf1         # ROI\u21306?\u22495?\u-248?\u22270?\u20687?\u22352?\u26631?\u-247?\u-244?None\u-30616?\u31034?\u20840?\u22270?\u20998?\u26512?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0209  \cf1         self.roi_active = None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0210  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0211  \cf1         # \u-32278?\u23450?\u20041?\u30452?\u24452?\u20998?\u32423?\u-244?None=\u20351?\u29992?DEFAULT_DIAMETER_CLASSES\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0212  \cf1         self.diameter_classes = None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0213  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0214  \cf1     def _get_diameter_classes(self):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0215  \cf1         """\u-28716?\u22238?\u26377?\u25928?\u30452?\u24452?\u20998?\u32423?\u21015?\u-30616? [(name, min_mm, max_mm), ...]"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0216  \cf1         if self.diameter_classes and len(self.diameter_classes) >= 2:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0217  \cf1             return self.diameter_classes\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0218  \cf1         return list(self.DEFAULT_DIAMETER_CLASSES)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0219  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0220  \cf1     def _get_class_suffix_keys(self, class_name):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0221  \cf1         """\u20026?\u32473?\u23450?\u20998?\u32423?\u21517?\u29983?\u25104? results dict \u-27346?\u21517?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0222  \cf1         return \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0223  \cf1             'count': f'\{class_name\}\u25968?\u-28209?',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0224  \cf1             'volume': f'\{class_name\}\u20307?\u31215?(mm\u179?)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0225  \cf1             'volume_pct': f'\{class_name\}\u20307?\u31215?\u21344?\u27604?(%)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0226  \cf1             'avg_diam': f'\{class_name\}\u24179?\u22343?\u30452?\u24452?(mm)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0227  \cf1         \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0228  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0229  \cf1     def load_image(self, image_path):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0230  \cf1         """\u21152?\u-28803?\u22270?\u20687?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0231  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0232  \cf1             self.original_image = cv2.imread(image_path)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0233  \cf1             if self.original_image is None:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0234  \cf1                 raise ValueError(f"\u26080?\u27861?\u-29701?\u21462?\u22270?\u20687?: \{image_path\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0235  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0236  \cf1             self.image_path = image_path\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0237  \cf1             self.image_name = os.path.basename(image_path)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0238  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0239  \cf1             # \u-31817?\u21462?\u22270?\u20687?\u23610?\u23544?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0240  \cf1             self.image_height, self.image_width = self.original_image.shape[:2]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0241  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0242  \cf1             # \u21019?\u24314?\u21407?\u22987?\u22270?\u20687?\u30340?\u21103?\u26412?\u29992?\u20110?\u32472?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0243  \cf1             self.display_image = self.original_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0244  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0245  \cf1             # \u-28820?\u25442?\u20026?\u28784?\u24230?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0246  \cf1             self.gray_image = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2GRAY)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0247  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0248  \cf1             # \u26816?\u27979?\u25195?\u25551?\u22270?\u20687?\u29305?\u24449?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0249  \cf1             self._detect_scan_image_characteristics()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0250  \cf1 \par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0251  \cf1             # \u26681?\u25454?\u26816?\u27979?\u32467?\u26524?\u-28663?\u25321?\u22686?\u24378?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0252  \cf1             if self.use_scan_optimization:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0253  \cf1                 # \u20351?\u29992?\u25195?\u25551?\u22270?\u20687?\u22686?\u24378?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0254  \cf1                 self.enhanced_image = self._enhance_scanned_image(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0255  \cf1                 self.scan_enhanced = self.enhanced_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0256  \cf1             else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0257  \cf1                 # \u20351?\u29992?\u21407?\u26377?\u22686?\u24378?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0258  \cf1                 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0259  \cf1                 self.enhanced_image = clahe.apply(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0260  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0261  \cf1             return True, "\u22270?\u20687?\u21152?\u-28803?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0262  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0263  \cf1             return False, f"\u22270?\u20687?\u21152?\u-28803?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0264  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0265  \cf1     def _detect_scan_image_characteristics(self):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0266  \cf1         """\u26816?\u27979?\u25195?\u25551?\u22270?\u20687?\u29305?\u24449?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0267  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0268  \cf1             # \u-29791?\u31639?\u22270?\u20687?\u32479?\u-29791?\u29305?\u24449?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0269  \cf1             mean_val = np.mean(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0270  \cf1             std_val = np.std(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0271  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0272  \cf1             # \u-29791?\u31639?\u-28743?\u32536?\u26816?\u27979?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0273  \cf1             edges = cv2.Canny(self.gray_image, 50, 150)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0274  \cf1             edge_percentage = np.sum(edges > 0) / (self.gray_image.shape[0] * self.gray_image.shape[1])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0275  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0276  \cf1             # \u-29791?\u31639?\u30452?\u26041?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0277  \cf1             hist = cv2.calcHist([self.gray_image], [0], None, [256], [0, 256])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0278  \cf1             hist_peaks = self._check_histogram_peaks(hist)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0279  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0280  \cf1             # \u21028?\u26029?\u26159?\u21542?\u20026?\u25195?\u25551?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0281  \cf1             # \u25195?\u25551?\u22270?\u20687?\u-28646?\u24120?\u-32564?\u26223?\u22343?\u21248?\u-248?\u26631?\u20934?\u24046?\u23567?\u-247?\u-244?\u-28743?\u32536?\u21344?\u27604?\u20302?\u-244?\u30452?\u26041?\u22270?\u26377?\u26126?\u26174?\u23792?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0282  \cf1             is_uniform_background = std_val < 30\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0283  \cf1             has_low_edge_percentage = edge_percentage < 0.1\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0284  \cf1             has_clear_peaks = hist_peaks\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0285  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0286  \cf1             if is_uniform_background and has_low_edge_percentage:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0287  \cf1                 self.scan_params['is_scanned'] = True\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0288  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0289  \cf1                 # \u26816?\u27979?\u-32564?\u26223?\u31867?\u22411?\u-248?\u20142?/\u26263?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0290  \cf1                 self.scan_params['background_type'] = 'light' if mean_val > 128 else 'dark'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0291  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0292  \cf1                 # \u20272?\u-29791?\u25195?\u25551?\u-29400?\u-28209?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0293  \cf1                 hist_smoothness = np.std(hist)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0294  \cf1                 if hist_smoothness < 100:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0295  \cf1                     self.scan_params['scan_quality'] = 'high'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0296  \cf1                 elif hist_smoothness < 300:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0297  \cf1                     self.scan_params['scan_quality'] = 'medium'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0298  \cf1                 else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0299  \cf1                     self.scan_params['scan_quality'] = 'low'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0300  \cf1 \par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0301  \cf1                 print(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0302  \cf1                     f"\u26816?\u27979?\u21040?\u25195?\u25551?\u22270?\u20687?: \u-32564?\u26223?\u31867?\u22411?=\{self.scan_params['background_type']\}, \u-29400?\u-28209?=\{self.scan_params['scan_quality']\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0303  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0304  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0305  \cf1             print(f"\u25195?\u25551?\u22270?\u20687?\u26816?\u27979?\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0306  \cf1             self.scan_params['is_scanned'] = False\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0307  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0308  \cf1     def _check_histogram_peaks(self, hist):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0309  \cf1         """\u26816?\u26597?\u30452?\u26041?\u22270?\u26159?\u21542?\u26377?\u26126?\u26174?\u23792?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0310  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0311  \cf1             # \u23547?\u25214?\u23792?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0312  \cf1             hist_flat = hist.flatten()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0313  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0314  \cf1             # \u-29791?\u31639?\u24179?\u28369?\u21518?\u30340?\u30452?\u26041?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0315  \cf1             hist_smooth = np.convolve(hist_flat, np.ones(5) / 5, mode='same')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0316  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0317  \cf1             # \u23547?\u25214?\u23616?\u-28440?\u26497?\u22823?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0318  \cf1             peaks = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0319  \cf1             for i in range(1, len(hist_smooth) - 1):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0320  \cf1                 if hist_smooth[i] > hist_smooth[i - 1] and hist_smooth[i] > hist_smooth[i + 1]:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0321  \cf1                     peaks.append(i)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0322  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0323  \cf1             # \u22914?\u26524?\u26377?2\u20010?\u25110?\u26356?\u23569?\u30340?\u26126?\u26174?\u23792?\u-248?\u-24879?\u30333?\u22270?\u20687?\u-247?\u-244?\u21487?\u-32515?\u26159?\u25195?\u25551?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0324  \cf1             return len(peaks) <= 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0325  \cf1         except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0326  \cf1             return False\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0327  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0328  \cf1     def _enhance_scanned_image(self, gray_image):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0329  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0330  \cf1         \u-27512?\u23545?\u25195?\u25551?\u22270?\u20687?\u30340?\u31616?\u21270?\u22686?\u24378?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0331  \cf1         \u25195?\u25551?\u22270?\u20687?\u-28646?\u24120?\u-32564?\u26223?\u22343?\u21248?\u-244?\u26080?\u-26880?\u22797?\u26434?\u30340?\u20809?\u29031?\u26657?\u27491?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0332  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0333  \cf1         # \u-28805?\u24494?\u23545?\u27604?\u24230?\u22686?\u24378?\u-244?\u-28545?\u20813?\u-28729?\u24230?\u22788?\u29702?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0334  \cf1         return self._mild_contrast_enhance(gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0335  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0336  \cf1     def _mild_contrast_enhance(self, image):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0337  \cf1         """\u-28805?\u24494?\u23545?\u27604?\u24230?\u22686?\u24378?\u-244?\u-28545?\u20813?\u-28729?\u24230?\u22788?\u29702?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0338  \cf1         # 1. \u-31817?\u21462?\u22270?\u20687?\u30340?\u26368?\u23567?\u21644?\u26368?\u22823?\u20687?\u32032?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0339  \cf1         min_val = np.min(image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0340  \cf1         max_val = np.max(image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0341  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0342  \cf1         # 2. \u32447?\u24615?\u25289?\u20280?\u21040?[0, 255]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0343  \cf1         if max_val > min_val:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0344  \cf1             enhanced = ((image - min_val) * 255.0 / (max_val - min_val)).astype(np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0345  \cf1         else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0346  \cf1             enhanced = image\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0347  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0348  \cf1         # 3. \u-28805?\u24494?\u-27376?\u21270?\u-248?\u21487?\u-28663?\u-244?\u26681?\u25454?\u25195?\u25551?\u-29400?\u-28209?\u20915?\u23450?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0349  \cf1         if self.scan_params['scan_quality'] == 'high':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0350  \cf1             kernel = np.array([[0, -1, 0],\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0351  \cf1                                [-1, 5, -1],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0352  \cf1                                [0, -1, 0]])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0353  \cf1             enhanced = cv2.filter2D(enhanced, -1, kernel)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0354  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0355  \cf1         return enhanced\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0356  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0357  \cf1     def enable_scan_optimization(self, enable=True):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0358  \cf1         """\u21551?\u29992?\u25110?\u31105?\u29992?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0359  \cf1         self.use_scan_optimization = enable\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0360  \cf1         if enable and hasattr(self, 'gray_image'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0361  \cf1             # \u-28211?\u26032?\u22686?\u24378?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0362  \cf1             self.enhanced_image = self._enhance_scanned_image(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0363  \cf1             self.scan_enhanced = self.enhanced_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0364  \cf1         elif hasattr(self, 'gray_image'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0365  \cf1             # \u24674?\u22797?\u21407?\u26377?\u22686?\u24378?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0366  \cf1             clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0367  \cf1             self.enhanced_image = clahe.apply(self.gray_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0368  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0369  \cf1         return self.use_scan_optimization\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0370  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0371  \cf1     def set_scan_background_type(self, bg_type):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0372  \cf1         """\u-29762?\u32622?\u25195?\u25551?\u-32564?\u26223?\u31867?\u22411?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0373  \cf1         if bg_type in ['light', 'dark', 'auto']:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0374  \cf1             self.scan_params['background_type'] = bg_type\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0375  \cf1             if bg_type == 'auto':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0376  \cf1                 # \u-32278?\u21160?\u26816?\u27979?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0377  \cf1                 mean_val = np.mean(self.gray_image) if hasattr(self, 'gray_image') else 128\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0378  \cf1                 self.scan_params['background_type'] = 'light' if mean_val > 128 else 'dark'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0379  \cf1             return True\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0380  \cf1         return False\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0381  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0382  \cf1     def set_scan_quality(self, quality):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0383  \cf1         """\u-29762?\u32622?\u25195?\u25551?\u-29400?\u-28209?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0384  \cf1         if quality in ['high', 'medium', 'low', 'auto']:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0385  \cf1             self.scan_params['scan_quality'] = quality\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0386  \cf1             return True\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0387  \cf1         return False\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0388  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0389  \cf1     def segment_roots(self, method='otsu'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0390  \cf1         """\u20998?\u21106?\u26681?\u31995? - \u20445?\u30041?\u22823?\u27941?\u27861?\u-244?\u22686?\u21152?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0391  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0392  \cf1             # \u22914?\u26524?\u21551?\u29992?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?\u-244?\u20351?\u29992?\u19987?\u29992?\u20998?\u21106?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0393  \cf1             if self.use_scan_optimization and self.scan_params['is_scanned']:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0394  \cf1                 return self._segment_scanned_roots()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0395  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0396  \cf1             # \u21542?\u21017?\u20351?\u29992?\u21407?\u22823?\u27941?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0397  \cf1             _, binary = cv2.threshold(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0398  \cf1                 self.enhanced_image, 0, 255,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0399  \cf1                 cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0400  \cf1             )\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0401  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0402  \cf1             # \u22522?\u26412?\u24418?\u24577?\u23398?\u25805?\u20316?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0403  \cf1             kernel = np.ones((3, 3), np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0404  \cf1             binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0405  \cf1             binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0406  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0407  \cf1             self.binary_mask = binary\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0408  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0409  \cf1             # \u24212?\u29992?ROI\u-30527?\u21098?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0410  \cf1             if self.roi_active is not None:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0411  \cf1                 x1, y1, x2, y2 = [int(v) for v in self.roi_active]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0412  \cf1                 h, w = self.binary_mask.shape[:2]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0413  \cf1                 x1, x2 = max(0, x1), min(w, x2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0414  \cf1                 y1, y2 = max(0, y1), min(h, y2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0415  \cf1                 roi_mask = np.zeros((h, w), dtype=np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0416  \cf1                 roi_mask[y1:y2, x1:x2] = 255\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0417  \cf1                 self.binary_mask = cv2.bitwise_and(self.binary_mask, roi_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0418  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0419  \cf1             return True, "\u22270?\u20687?\u20998?\u21106?\u23436?\u25104?\u-248?\u20351?\u29992?\u22823?\u27941?\u27861?\u-247?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0420  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0421  \cf1             return False, f"\u20998?\u21106?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0422  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0423  \cf1     def _segment_scanned_roots(self):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0424  \cf1         """\u-27512?\u23545?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?\u30340?\u20998?\u21106?\u26041?\u27861?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0425  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0426  \cf1             # \u25195?\u25551?\u22270?\u20687?\u-28646?\u24120?\u23545?\u27604?\u24230?\u22909?\u-244?\u20351?\u29992?\u31616?\u21333?\u30340?\u-27128?\u20540?\u20998?\u21106?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0427  \cf1             # \u-29791?\u31639?\u-32278?\u-28670?\u24212?\u-27128?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0428  \cf1             mean_val = np.mean(self.enhanced_image)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0429  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0430  \cf1             if self.scan_params['background_type'] == 'light':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0431  \cf1                 # \u23545?\u20110?\u30333?\u-32142?\u-32564?\u26223?\u-244?\u26681?\u31995?\u-28646?\u24120?\u-28797?\u26263?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0432  \cf1                 _, binary = cv2.threshold(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0433  \cf1                     self.enhanced_image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0434  \cf1                     mean_val * 0.6,  # \u-32278?\u-28670?\u24212?\u-27128?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0435  \cf1                     255,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0436  \cf1                     cv2.THRESH_BINARY_INV\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0437  \cf1                 )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0438  \cf1             else:  # \u26263?\u-32564?\u26223?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0439  \cf1                 # \u23545?\u20110?\u-24879?\u-32142?\u-32564?\u26223?\u-244?\u26681?\u31995?\u-28646?\u24120?\u-28797?\u20142?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0440  \cf1                 _, binary = cv2.threshold(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0441  \cf1                     self.enhanced_image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0442  \cf1                     mean_val * 1.4,  # \u-32278?\u-28670?\u24212?\u-27128?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0443  \cf1                     255,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0444  \cf1                     cv2.THRESH_BINARY\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0445  \cf1                 )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0446  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0447  \cf1             # \u31616?\u21270?\u24418?\u24577?\u23398?\u25805?\u20316?\u-248?\u25195?\u25551?\u22270?\u20687?\u-28646?\u24120?\u24178?\u20928?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0448  \cf1             kernel = np.ones((2, 2), np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0449  \cf1             binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel, iterations=1)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0450  \cf1             binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0451  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0452  \cf1             self.binary_mask = binary\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0453  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0454  \cf1             # \u24212?\u29992?ROI\u-30527?\u21098?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0455  \cf1             if self.roi_active is not None:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0456  \cf1                 x1, y1, x2, y2 = [int(v) for v in self.roi_active]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0457  \cf1                 h, w = self.binary_mask.shape[:2]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0458  \cf1                 x1, x2 = max(0, x1), min(w, x2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0459  \cf1                 y1, y2 = max(0, y1), min(h, y2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0460  \cf1                 roi_mask = np.zeros((h, w), dtype=np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0461  \cf1                 roi_mask[y1:y2, x1:x2] = 255\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0462  \cf1                 self.binary_mask = cv2.bitwise_and(self.binary_mask, roi_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0463  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0464  \cf1             return True, "\u25195?\u25551?\u22270?\u20687?\u20998?\u21106?\u23436?\u25104?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0465  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0466  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0467  \cf1             # \u22914?\u26524?\u22833?\u-29403?\u-244?\u22238?\u-28672?\u21040?\u21407?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0468  \cf1             return False, f"\u25195?\u25551?\u22270?\u20687?\u20998?\u21106?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0469  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0470  \cf1     def filter_non_roots(self, min_length=5, min_area=20, min_aspect_ratio=1.0):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0471  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0472  \cf1         \u31616?\u21270?\u29256?\u26681?\u31995?\u-28729?\u28388?\u31639?\u27861? - \u21482?\u20445?\u30041?\u19977?\u20010?\u20851?\u-27346?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0473  \cf1         \u22686?\u21152?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?\u29256?\u26412?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0474  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0475  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0476  \cf1             # \u22914?\u26524?\u21551?\u29992?\u25195?\u25551?\u22270?\u20687?\u20248?\u21270?\u-244?\u20351?\u29992?\u19987?\u29992?\u-28729?\u28388?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0477  \cf1             if self.use_scan_optimization and self.scan_params['is_scanned']:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0478  \cf1                 return self._filter_non_roots_scanned(min_length, min_area, min_aspect_ratio)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0479  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0480  \cf1             # \u21407?\u26377?\u-28729?\u28388?\u31639?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0481  \cf1             labeled_image = measure.label(self.binary_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0482  \cf1             props = measure.regionprops_table(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0483  \cf1                 labeled_image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0484  \cf1                 properties=[\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0485  \cf1                     'label', 'area', 'major_axis_length', 'minor_axis_length'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0486  \cf1                 ]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0487  \cf1             )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0488  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0489  \cf1             n_regions = len(props['label'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0490  \cf1             filtered_mask = np.zeros_like(self.binary_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0491  \cf1             filtered_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0492  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0493  \cf1             # \u-26492?\u-29791?\u31639?\u26465?\u20214?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0494  \cf1             major_axis = props['major_axis_length']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0495  \cf1             minor_axis = props['minor_axis_length']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0496  \cf1             areas = props['area']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0497  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0498  \cf1             # \u-28545?\u20813?\u-27036?\u-26890?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0499  \cf1             minor_axis_safe = np.where(minor_axis == 0, 0.01, minor_axis)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0500  \cf1             aspect_ratios = major_axis / minor_axis_safe\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0501  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0502  \cf1             # 1. \u-26782?\u31215?\u-28729?\u28388?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0503  \cf1             area_condition = areas >= min_area\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0504  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0505  \cf1             # 2. \u-27265?\u24230?\u-28729?\u28388?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0506  \cf1             length_condition = major_axis >= min_length\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0507  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0508  \cf1             # 3. \u32437?\u27178?\u27604?\u-28729?\u28388?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0509  \cf1             aspect_condition = aspect_ratios >= min_aspect_ratio\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0510  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0511  \cf1             # \u32508?\u21512?\u25152?\u26377?\u26465?\u20214?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0512  \cf1             valid_conditions = area_condition & length_condition & aspect_condition\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0513  \cf1             valid_indices = np.where(valid_conditions)[0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0514  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0515  \cf1             # \u24212?\u29992?\u-28729?\u28388?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0516  \cf1             for idx in valid_indices:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0517  \cf1                 label = props['label'][idx]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0518  \cf1                 filtered_mask[labeled_image == label] = 255\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0519  \cf1                 filtered_count += 1\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0520  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0521  \cf1             # \u21518?\u22788?\u29702? - \u24418?\u24577?\u23398?\u25805?\u20316?\u-28706?\u25509?\u26029?\u-30526?\u30340?\u26681?\u31995?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0522  \cf1             if filtered_count > 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0523  \cf1                 kernel = np.ones((3, 3), np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0524  \cf1                 # \u20808?\u-27155?\u-28720?\u31639?\u22635?\u20805?\u23567?\u23380?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0525  \cf1                 filtered_mask = cv2.morphologyEx(filtered_mask, cv2.MORPH_CLOSE, kernel, iterations=1)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0526  \cf1                 # \u20877?\u24320?\u-28720?\u31639?\u21435?\u-27036?\u23567?\u22122?\u28857?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0527  \cf1                 filtered_mask = cv2.morphologyEx(filtered_mask, cv2.MORPH_OPEN, kernel, iterations=1)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0528  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0529  \cf1             self.filtered_mask = filtered_mask\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0530  \cf1             self.filtered_count = filtered_count\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0531  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0532  \cf1             # \u20445?\u23384?\u-28729?\u28388?\u32479?\u-29791?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0533  \cf1             self.filter_stats = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0534  \cf1                 'total_regions': n_regions,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0535  \cf1                 'filtered_regions': filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0536  \cf1                 'removed_regions': n_regions - filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0537  \cf1                 'removal_percentage': ((n_regions - filtered_count) / n_regions * 100) if n_regions > 0 else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0538  \cf1                 'average_area': np.mean(areas) if len(areas) > 0 else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0539  \cf1                 'average_aspect_ratio': np.mean(aspect_ratios) if len(aspect_ratios) > 0 else 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0540  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0541  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0542  \cf1             # \u20445?\u23384?\u-30549?\u-28729?\u28388?\u21306?\u22495?\u30340?\u32479?\u-29791?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0543  \cf1             filtered_areas = areas[valid_indices] if len(valid_indices) > 0 else []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0544  \cf1             if len(filtered_areas) > 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0545  \cf1                 self.filter_stats.update(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0546  \cf1                     'filtered_min_area': np.min(filtered_areas),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0547  \cf1                     'filtered_max_area': np.max(filtered_areas),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0548  \cf1                     'filtered_avg_area': np.mean(filtered_areas)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0549  \cf1                 \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0550  \cf1 \par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0551  \cf1             return True, f"\u-28729?\u28388?\u23436?\u25104?\u-244?\u20445?\u30041?\{filtered_count\}\u20010?\u26681?\u31995?\u23545?\u-29599?\u-248?\u-28729?\u28388?\u25481?\{n_regions - filtered_count\}\u20010?\u-247?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0552  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0553  \cf1             # \u22914?\u26524?\u-28729?\u28388?\u22833?\u-29403?\u-244?\u20351?\u29992?\u21407?\u22987?\u25513?\u30721?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0554  \cf1             self.filtered_mask = self.binary_mask.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0555  \cf1             labeled = measure.label(self.binary_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0556  \cf1             self.filtered_count = np.max(labeled) if np.max(labeled) > 0 else 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0557  \cf1             self.filter_stats = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0558  \cf1                 'total_regions': self.filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0559  \cf1                 'filtered_regions': self.filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0560  \cf1                 'removed_regions': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0561  \cf1                 'removal_percentage': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0562  \cf1                 'error': str(e)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0563  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0564  \cf1             return False, f"\u-28729?\u28388?\u22833?\u-29403?\u-244?\u20351?\u29992?\u21407?\u22987?\u22270?\u20687?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0565  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0566  \cf1     def _filter_non_roots_scanned(self, min_length=3, min_area=10, min_aspect_ratio=0.8):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0567  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0568  \cf1         \u-27512?\u23545?\u25195?\u25551?\u22270?\u20687?\u30340?\u-28729?\u28388?\u20248?\u21270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0569  \cf1         \u25195?\u25551?\u22270?\u20687?\u20013?\u30340?\u26681?\u31995?\u-28646?\u24120?\u26356?\u28165?\u26224?\u-244?\u22122?\u22768?\u26356?\u23569?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0570  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0571  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0572  \cf1             labeled_image = measure.label(self.binary_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0573  \cf1             props = measure.regionprops_table(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0574  \cf1                 labeled_image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0575  \cf1                 properties=['label', 'area', 'major_axis_length', 'minor_axis_length']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0576  \cf1             )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0577  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0578  \cf1             n_regions = len(props['label'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0579  \cf1             filtered_mask = np.zeros_like(self.binary_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0580  \cf1             filtered_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0581  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0582  \cf1             # \u25195?\u25551?\u22270?\u20687?\u21487?\u20197?\u25918?\u23485?\u-28729?\u28388?\u26465?\u20214?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0583  \cf1             # \u22240?\u20026?\u26681?\u31995?\u-28646?\u24120?\u26356?\u23436?\u25972?\u-244?\u22122?\u22768?\u26356?\u23569?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0584  \cf1             for i in range(n_regions):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0585  \cf1                 area = props['area'][i]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0586  \cf1                 major_axis = props['major_axis_length'][i]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0587  \cf1                 minor_axis = props['minor_axis_length'][i]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0588  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0589  \cf1                 # \u-28545?\u20813?\u-27036?\u-26890?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0590  \cf1                 if minor_axis == 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0591  \cf1                     aspect_ratio = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0592  \cf1                 else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0593  \cf1                     aspect_ratio = major_axis / minor_axis\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0594  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0595  \cf1                 # \u25195?\u25551?\u22270?\u20687?\u30340?\u-28729?\u28388?\u26465?\u20214?\u-248?\u26356?\u23485?\u26494?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0596  \cf1                 if (area >= min_area and\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0597  \cf1                         major_axis >= min_length and\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0598  \cf1                         aspect_ratio >= min_aspect_ratio):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0599  \cf1                     label = props['label'][i]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0600  \cf1                     filtered_mask[labeled_image == label] = 255\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0601  \cf1                     filtered_count += 1\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0602  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0603  \cf1             self.filtered_mask = filtered_mask\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0604  \cf1             self.filtered_count = filtered_count\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0605  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0606  \cf1             # \u20445?\u23384?\u-28729?\u28388?\u32479?\u-29791?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0607  \cf1             self.filter_stats = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0608  \cf1                 'total_regions': n_regions,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0609  \cf1                 'filtered_regions': filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0610  \cf1                 'removed_regions': n_regions - filtered_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0611  \cf1                 'removal_percentage': ((n_regions - filtered_count) / n_regions * 100) if n_regions > 0 else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0612  \cf1                 'average_area': np.mean(props['area']) if len(props['area']) > 0 else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0613  \cf1                 'scan_optimized': True  # \u26631?\u-29776?\u20026?\u25195?\u25551?\u20248?\u21270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0614  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0615  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0616  \cf1             return True, f"\u25195?\u25551?\u22270?\u20687?\u-28729?\u28388?\u23436?\u25104?\u-244?\u20445?\u30041?\{filtered_count\}\u20010?\u26681?\u31995?\u23545?\u-29599?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0617  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0618  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0619  \cf1             # \u22914?\u26524?\u22833?\u-29403?\u-244?\u20351?\u29992?\u21407?\u-28729?\u28388?\u26041?\u27861?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0620  \cf1             return self.filter_non_roots(min_length, min_area, min_aspect_ratio)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0621  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0622  \cf1     def count_roots(self, min_size=50):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0623  \cf1         """\u31616?\u21270?\u29256?\u-230?\u21482?\u-29791?\u25968?\u26681?\u31995?\u-244?\u19981?\u20998?\u31163?\u20010?\u20307?\u32454?\u-32126?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0624  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0625  \cf1             if not hasattr(self, 'filtered_mask') or np.sum(self.filtered_mask) == 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0626  \cf1                 self.root_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0627  \cf1                 return True, "\u27809?\u26377?\u26816?\u27979?\u21040?\u26681?\u31995?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0628  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0629  \cf1             # \u20351?\u29992?\u-28706?\u-28646?\u22495?\u20998?\u26512?\u-29791?\u31639?\u26681?\u31995?\u25968?\u-28209?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0630  \cf1             num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0631  \cf1                 self.filtered_mask, connectivity=8\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0632  \cf1             )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0633  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0634  \cf1             # \u32479?\u-29791?\u28385?\u-29261?\u26368?\u23567?\u23610?\u23544?\u26465?\u20214?\u30340?\u26681?\u31995?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0635  \cf1             root_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0636  \cf1             self.connected_components = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0637  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0638  \cf1             for i in range(1, num_labels):  # \u-29197?\u-28729?\u-32564?\u26223?(0)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0639  \cf1                 area = stats[i, cv2.CC_STAT_AREA]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0640  \cf1                 if area >= min_size:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0641  \cf1                     root_count += 1\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0642  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0643  \cf1                     # \u-29791?\u31639?\u26681?\u31995?\u-27265?\u24230?\u-248?\u20351?\u29992?\u-25944?\u26550?\u-27265?\u24230?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0644  \cf1                     root_mask = (labels == i).astype(np.uint8) * 255\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0645  \cf1                     root_length = self._calculate_root_length(root_mask)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0646  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0647  \cf1                     # \u-29791?\u31639?\u26681?\u31995?\u30452?\u24452?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0648  \cf1                     root_diameter = self._calculate_root_diameter(area, root_length)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0649  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0650  \cf1                     # \u-29791?\u31639?\u26681?\u31995?\u20307?\u31215?\u21644?\u-30616?\u-26782?\u31215?\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0651  \cf1                     root_volume = self._calculate_root_volume(root_length, root_diameter)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0652  \cf1                     root_surface = self._calculate_root_surface(root_length, root_diameter)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0653  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0654  \cf1                     # \u20445?\u23384?\u-28706?\u-28646?\u32452?\u20214?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0655  \cf1                     self.connected_components.append(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0656  \cf1                         'id': root_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0657  \cf1                         'area_pixels': area,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0658  \cf1                         'area_mm2': area * self.pixel_to_mm ** 2,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0659  \cf1                         'length_pixels': root_length / self.pixel_to_mm,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0660  \cf1                         'length_mm': root_length,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0661  \cf1                         'diameter_mm': root_diameter,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0662  \cf1                         'volume_mm3': root_volume,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0663  \cf1                         'surface_mm2': root_surface,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0664  \cf1                         'centroid': centroids[i],  # (x, y)\u22352?\u26631?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0665  \cf1                         'bounding_box': stats[i, :4],  # x, y, width, height\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0666  \cf1                         'label': i  # \u22312?\u26631?\u31614?\u22270?\u20687?\u20013?\u30340?\u26631?\u31614?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0667  \cf1                     \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0668  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0669  \cf1             self.root_count = root_count\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0670  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0671  \cf1             # \u21019?\u24314?\u31616?\u21333?\u30340?\u24425?\u-32142?\u26631?\u27880?\u22270?\u29992?\u20110?\u26174?\u31034?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0672  \cf1             self._create_simple_color_map(labels, num_labels)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0673  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0674  \cf1             return True, f"\u26816?\u27979?\u21040? \{root_count\} \u20010?\u26681?\u31995?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0675  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0676  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0677  \cf1             self.root_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0678  \cf1             return False, f"\u26681?\u31995?\u-29791?\u25968?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0679  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0680  \cf1     def _calculate_root_length(self, root_mask):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0681  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u-27265?\u24230?\u-248?\u-25944?\u26550?\u-27265?\u24230?\u-247?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0682  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0683  \cf1             # \u-25944?\u26550?\u21270?\u-29791?\u31639?\u-27265?\u24230?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0684  \cf1             skeleton = morphology.skeletonize(root_mask > 0)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0685  \cf1             skeleton_pixels = np.sum(skeleton)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0686  \cf1             return skeleton_pixels * self.pixel_to_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0687  \cf1         except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0688  \cf1             # \u22914?\u26524?\u-25944?\u26550?\u21270?\u22833?\u-29403?\u-244?\u20351?\u29992?\u-26782?\u31215?\u20272?\u31639?\u-27265?\u24230?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0689  \cf1             area_pixels = np.sum(root_mask > 0)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0690  \cf1             return np.sqrt(area_pixels) * self.pixel_to_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0691  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0692  \cf1     def _calculate_root_diameter(self, area_pixels, length_mm):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0693  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u30452?\u24452?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0694  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0695  \cf1             if length_mm <= 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0696  \cf1                 return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0697  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0698  \cf1             # \u20551?\u-29762?\u26681?\u31995?\u20026?\u22278?\u26609?\u20307?\u-244?\u30452?\u24452? = \u-26782?\u31215? / \u-27265?\u24230?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0699  \cf1             area_mm2 = area_pixels * self.pixel_to_mm ** 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0700  \cf1             return area_mm2 / length_mm\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0701  \cf1         except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0702  \cf1             return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0703  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0704  \cf1     def _calculate_root_volume(self, length_mm, diameter_mm):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0705  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u20307?\u31215?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0706  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0707  \cf1             if diameter_mm <= 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0708  \cf1                 return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0709  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0710  \cf1             # \u20551?\u-29762?\u26681?\u31995?\u20026?\u22278?\u26609?\u20307?\u-244?\u20307?\u31215? = \u960? * (d/2)\u178? * L\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0711  \cf1             radius = diameter_mm / 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0712  \cf1             return math.pi * radius * radius * length_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0713  \cf1         except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0714  \cf1             return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0715  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0716  \cf1     def _calculate_root_surface(self, length_mm, diameter_mm):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0717  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u-30616?\u-26782?\u31215?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0718  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0719  \cf1             if diameter_mm <= 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0720  \cf1                 return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0721  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0722  \cf1             # \u20551?\u-29762?\u26681?\u31995?\u20026?\u22278?\u26609?\u20307?\u-244?\u-30616?\u-26782?\u31215? = \u960? * d * L\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0723  \cf1             return math.pi * diameter_mm * length_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0724  \cf1         except:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0725  \cf1             return 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0726  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0727  \cf1     def _create_simple_color_map(self, labels, num_labels):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0728  \cf1         """\u21019?\u24314?\u31616?\u21270?\u30340?\u24425?\u-32142?\u26631?\u27880?\u22270?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0729  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0730  \cf1             if num_labels <= 1:  # \u21482?\u26377?\u-32564?\u26223?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0731  \cf1                 return\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0732  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0733  \cf1             # \u21019?\u24314?\u24425?\u-32142?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0734  \cf1             height, width = labels.shape\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0735  \cf1             color_map = np.zeros((height, width, 3), dtype=np.uint8)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0736  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0737  \cf1             # \u20026?\u27599?\u20010?\u26681?\u31995?\u20998?\u-28339?\u-26468?\u-32142?\u-248?\u31616?\u21270?\u29256?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0738  \cf1             for i, component in enumerate(self.connected_components, 1):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0739  \cf1                 # \u29983?\u25104?\u19968?\u-32268?\u30340?\u-26468?\u-32142?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0740  \cf1                 hue = (i * 137) % 360\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0741  \cf1                 rgb = colorsys.hsv_to_rgb(hue / 360, 0.8, 1.0)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0742  \cf1                 color = [int(c * 255) for c in rgb]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0743  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0744  \cf1                 # \u23558?\u-29723?\u26681?\u31995?\u23545?\u24212?\u30340?\u21306?\u22495?\u30528?\u-32142?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0745  \cf1                 mask = (labels == component['label'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0746  \cf1                 color_map[mask] = color\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0747  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0748  \cf1             self.color_map = color_map\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0749  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0750  \cf1         except Exception as e:\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0751  \cf1             print(f"\u21019?\u24314?\u24425?\u-32142?\u26631?\u27880?\u22270?\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0752  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0753  \cf1     def calculate_root_parameters(self):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0754  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u21442?\u25968?\u-230?\u27604?\u26681?\u-27265?\u12289?\u24635?\u26681?\u-30616?\u-26782?\u31215?\u12289?\u24635?\u26681?\u20307?\u31215?\u12289?\u24635?\u26681?\u-27265?\u12289?\u26681?\u30452?\u24452?\u20998?\u24067?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0755  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0756  \cf1             if not self.connected_components:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0757  \cf1                 return False, "\u27809?\u26377?\u26681?\u31995?\u25968?\u25454?\u-244?\u-29705?\u20808?\u-28709?\u-30644?\u26681?\u31995?\u-29791?\u25968?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0758  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0759  \cf1             # \u21021?\u22987?\u21270?\u32479?\u-29791?\u21464?\u-28209?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0760  \cf1             total_length = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0761  \cf1             total_area = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0762  \cf1             total_volume = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0763  \cf1             total_surface = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0764  \cf1             diameters = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0765  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0766  \cf1             # \u32479?\u-29791?\u25152?\u26377?\u26681?\u31995?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0767  \cf1             for component in self.connected_components:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0768  \cf1                 total_length += component['length_mm']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0769  \cf1                 total_area += component['area_mm2']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0770  \cf1                 total_volume += component['volume_mm3']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0771  \cf1                 total_surface += component['surface_mm2']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0772  \cf1                 diameters.append(component['diameter_mm'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0773  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0774  \cf1             # \u-29791?\u31639?\u24179?\u22343?\u30452?\u24452?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0775  \cf1             avg_diameter = np.mean(diameters) if diameters else 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0776  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0777  \cf1             # \u-29791?\u31639?\u27604?\u26681?\u-27265?\u-248?\u24635?\u26681?\u-27265?/\u24635?\u26681?\u31995?\u-26782?\u31215?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0778  \cf1             specific_root_length = total_length / total_area if total_area > 0 else 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0779  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0780  \cf1             # \u26681?\u25454?\u30452?\u24452?\u20998?\u32423?\u24182?\u-29791?\u31639?\u20307?\u31215?\u21344?\u27604?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0781  \cf1             diameter_distribution = self._classify_roots_by_diameter(diameters, self.connected_components)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0782  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0783  \cf1             # \u20445?\u23384?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0784  \cf1             self.root_parameters = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0785  \cf1                 'total_length': total_length,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0786  \cf1                 'total_area': total_area,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0787  \cf1                 'total_volume': total_volume,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0788  \cf1                 'total_surface': total_surface,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0789  \cf1                 'avg_diameter': avg_diameter,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0790  \cf1                 'specific_root_length': specific_root_length,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0791  \cf1                 'diameter_distribution': diameter_distribution\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0792  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0793  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0794  \cf1             return True, "\u26681?\u31995?\u21442?\u25968?\u-29791?\u31639?\u23436?\u25104?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0795  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0796  \cf1             return False, f"\u26681?\u31995?\u21442?\u25968?\u-29791?\u31639?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0797  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0798  \cf1     def _classify_roots_by_diameter(self, diameters, components):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0799  \cf1         """\u26681?\u25454?\u26681?\u30452?\u24452?\u23545?\u26681?\u31995?\u-28709?\u-30644?\u20998?\u32423?\u24182?\u-29791?\u31639?\u20307?\u31215?\u21344?\u27604?\u-248?\u20351?\u29992?\u-32278?\u23450?\u20041?\u25110?\u-24872?\u-29788?\u20998?\u32423?\u-247?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0800  \cf1         try:\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0801  \cf1             # \u21021?\u22987?\u21270?\u32479?\u-29791?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0802  \cf1             classification = \{\}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0803  \cf1             total_volume = sum(c['volume_mm3'] for c in components)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0804  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0805  \cf1             for class_name, min_d, max_d in self._get_diameter_classes():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0806  \cf1                 class_roots = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0807  \cf1                 class_volume = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0808  \cf1                 class_count = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0809  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0810  \cf1                 for i, component in enumerate(components):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0811  \cf1                     diameter = component['diameter_mm']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0812  \cf1                     if max_d == float('inf'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0813  \cf1                         if diameter >= min_d:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0814  \cf1                             in_range = True\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0815  \cf1                         else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0816  \cf1                             in_range = False\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0817  \cf1                     else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0818  \cf1                         in_range = (min_d <= diameter < max_d)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0819  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0820  \cf1                     if in_range:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0821  \cf1                         class_roots.append(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0822  \cf1                             'id': component['id'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0823  \cf1                             'diameter': diameter,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0824  \cf1                             'length': component['length_mm'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0825  \cf1                             'volume': component['volume_mm3']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0826  \cf1                         \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0827  \cf1                         class_volume += component['volume_mm3']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0828  \cf1                         class_count += 1\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0829  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0830  \cf1                 # \u-29791?\u31639?\u20307?\u31215?\u21344?\u27604?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0831  \cf1                 volume_percentage = (class_volume / total_volume * 100) if total_volume > 0 else 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0832  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0833  \cf1                 classification[class_name] = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0834  \cf1                     'count': class_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0835  \cf1                     'volume_mm3': round(class_volume, 3),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0836  \cf1                     'volume_percentage': round(volume_percentage, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0837  \cf1                     'avg_diameter_mm': round(np.mean([r['diameter'] for r in class_roots]), 3) if class_roots else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0838  \cf1                     'min_diameter_mm': round(min([r['diameter'] for r in class_roots]), 3) if class_roots else 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0839  \cf1                     'max_diameter_mm': round(max([r['diameter'] for r in class_roots]), 3) if class_roots else 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0840  \cf1                 \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0841  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0842  \cf1             return classification\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0843  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0844  \cf1             print(f"\u26681?\u31995?\u20998?\u32423?\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0845  \cf1             return \{\}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0846  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0847  \cf1     def calculate_parameters(self):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0848  \cf1         """\u-29791?\u31639?\u26681?\u31995?\u21442?\u25968?\u-248?\u22686?\u24378?\u29256?\u-247?- \u21253?\u21547?\u26356?\u22810?\u-29722?\u32454?\u21442?\u25968?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0849  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0850  \cf1             # \u26816?\u26597?\u26159?\u21542?\u26377?\u-28729?\u28388?\u21518?\u30340?\u25513?\u30721?\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0851  \cf1             if not hasattr(self, 'filtered_mask') or np.sum(self.filtered_mask) == 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0852  \cf1                 # \u21363?\u20351?\u27809?\u26377?\u26681?\u31995?\u-244?\u20063?\u21021?\u22987?\u21270?\u25152?\u26377?\u23383?\u27573?\u20026?0\u25110?\u-24872?\u-29788?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0853  \cf1                 self.results = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0854  \cf1                     '\u22270?\u20687?\u21517?\u31216?': self.image_name,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0855  \cf1                     '\u20998?\u26512?\u26102?\u-27148?': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0856  \cf1                     '\u20687?\u32032?\u-28820?\u25442?\u31995?\u25968?(mm/\u20687?\u32032?)': self.pixel_to_mm,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0857  \cf1                     '\u22270?\u20687?\u23485?\u24230?(mm)': round(self.image_width * self.pixel_to_mm, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0858  \cf1                     '\u22270?\u20687?\u-25896?\u24230?(mm)': round(self.image_height * self.pixel_to_mm, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0859  \cf1                     '\u26681?\u31995?\u25968?\u-28209?': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0860  \cf1                     '\u24635?\u26681?\u-27265?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0861  \cf1                     '\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0862  \cf1                     '\u22270?\u20687?\u23485?\u24230?(\u20687?\u32032?)': self.image_width,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0863  \cf1                     '\u22270?\u20687?\u-25896?\u24230?(\u20687?\u32032?)': self.image_height,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0864  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0865  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0866  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0867  \cf1                     '\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0868  \cf1                     '\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0869  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0870  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0871  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0872  \cf1                     '\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0873  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0874  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0875  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0876  \cf1                     '\u30452?\u24452?\u26631?\u20934?\u24046?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0877  \cf1                     '\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0878  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0879  \cf1                     '\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0880  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0881  \cf1                     '\u24635?\u26681?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0882  \cf1                     '\u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0883  \cf1                     '\u27604?\u26681?\u-27265?(mm/mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0884  \cf1                     '\u24635?\u26681?\u-27265?(\u32047?\u-29791?)(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0885  \cf1                     '\u24179?\u22343?\u26681?\u30452?\u24452?(mm)': 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0886  \cf1                 \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0887  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0888  \cf1                 # \u28155?\u21152?\u30452?\u24452?\u20998?\u32423?\u23383?\u27573?\u-248?\u21363?\u20351?\u20026?0\u20063?\u20445?\u30041?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0889  \cf1                 for class_name, _, _ in self._get_diameter_classes():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0890  \cf1                     self.results[f'\{class_name\}\u25968?\u-28209?'] = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0891  \cf1                     self.results[f'\{class_name\}\u20307?\u31215?(mm\u179?)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0892  \cf1                     self.results[f'\{class_name\}\u20307?\u31215?\u21344?\u27604?(%)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0893  \cf1                     self.results[f'\{class_name\}\u24179?\u22343?\u30452?\u24452?(mm)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0894  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0895  \cf1                 return True, "\u27809?\u26377?\u26816?\u27979?\u21040?\u26681?\u31995?\u-244?\u25152?\u26377?\u21442?\u25968?\u-29762?\u32622?\u20026?0"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0896  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0897  \cf1             # \u-29791?\u31639?\u24635?\u-26782?\u31215?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0898  \cf1             root_area_pixels = np.sum(self.filtered_mask > 0)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0899  \cf1             root_area_mm2 = root_area_pixels * self.pixel_to_mm ** 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0900  \cf1 \par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0901  \cf1             # \u-25944?\u26550?\u21270?\u-29791?\u31639?\u24635?\u-27265?\u24230?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0902  \cf1             binary_for_skeleton = self.filtered_mask > 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0903  \cf1             skeleton = morphology.skeletonize(binary_for_skeleton)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0904  \cf1             skeleton_pixels = np.sum(skeleton)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0905  \cf1             total_length_pixels = skeleton_pixels\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0906  \cf1             total_length_mm = total_length_pixels * self.pixel_to_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0907  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0908  \cf1             # \u20445?\u23384?\u25972?\u20307?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0909  \cf1             self.results = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0910  \cf1                 '\u22270?\u20687?\u21517?\u31216?': self.image_name,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0911  \cf1                 '\u20998?\u26512?\u26102?\u-27148?': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0912  \cf1                 '\u20687?\u32032?\u-28820?\u25442?\u31995?\u25968?(mm/\u20687?\u32032?)': self.pixel_to_mm,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0913  \cf1                 '\u22270?\u20687?\u23485?\u24230?(mm)': round(self.image_width * self.pixel_to_mm, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0914  \cf1                 '\u22270?\u20687?\u-25896?\u24230?(mm)': round(self.image_height * self.pixel_to_mm, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0915  \cf1                 '\u26681?\u31995?\u25968?\u-28209?': self.root_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0916  \cf1                 '\u24635?\u26681?\u-27265?(mm)': round(total_length_mm, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0917  \cf1                 '\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': round(root_area_mm2, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0918  \cf1                 '\u22270?\u20687?\u23485?\u24230?(\u20687?\u32032?)': self.filtered_mask.shape[1],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0919  \cf1                 '\u22270?\u20687?\u-25896?\u24230?(\u20687?\u32032?)': self.filtered_mask.shape[0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0920  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0921  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0922  \cf1             # \u22914?\u26524?\u26377?\u26681?\u31995?\u20449?\u24687?\u-244?\u28155?\u21152?\u23610?\u23544?\u20998?\u24067?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0923  \cf1             if self.connected_components:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0924  \cf1                 areas = [c['area_mm2'] for c in self.connected_components]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0925  \cf1                 lengths = [c['length_mm'] for c in self.connected_components]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0926  \cf1                 diameters = [c['diameter_mm'] for c in self.connected_components]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0927  \cf1                 volumes = [c['volume_mm3'] for c in self.connected_components]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0928  \cf1                 surfaces = [c['surface_mm2'] for c in self.connected_components]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0929  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0930  \cf1                 self.results.update(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0931  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': round(max(areas), 2) if areas else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0932  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': round(min(areas), 2) if areas else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0933  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': round(np.mean(areas), 2) if areas else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0934  \cf1                     '\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)': round(np.std(areas), 2) if areas else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0935  \cf1                     '\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)': round((np.std(areas) / np.mean(areas) * 100) if np.mean(areas) > 0 else 0, 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0936  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)': round(max(lengths), 2) if lengths else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0937  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)': round(min(lengths), 2) if lengths else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0938  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)': round(np.mean(lengths), 2) if lengths else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0939  \cf1                     '\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)': round(np.std(lengths), 2) if lengths else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0940  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)': round(max(diameters), 3) if diameters else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0941  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)': round(min(diameters), 3) if diameters else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0942  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u30452?\u24452?(mm)': round(np.mean(diameters), 3) if diameters else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0943  \cf1                     '\u30452?\u24452?\u26631?\u20934?\u24046?(mm)': round(np.std(diameters), 3) if diameters else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0944  \cf1                     '\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': round(sum(volumes), 2) if volumes else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0945  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': round(np.mean(volumes), 2) if volumes else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0946  \cf1                     '\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': round(sum(surfaces), 2) if surfaces else 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0947  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': round(np.mean(surfaces), 2) if surfaces else 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0948  \cf1                 \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0949  \cf1             else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0950  \cf1                 # \u21363?\u20351?\u27809?\u26377?\u26681?\u31995?\u32452?\u20214?\u-244?\u20063?\u28155?\u21152?\u-28711?\u20123?\u23383?\u27573?\u20026?0\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0951  \cf1                 self.results.update(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0952  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0953  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0954  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0955  \cf1                     '\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0956  \cf1                     '\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0957  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0958  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0959  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0960  \cf1                     '\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0961  \cf1                     '\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0962  \cf1                     '\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0963  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u30452?\u24452?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0964  \cf1                     '\u30452?\u24452?\u26631?\u20934?\u24046?(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0965  \cf1                     '\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0966  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0967  \cf1                     '\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0968  \cf1                     '\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0969  \cf1                 \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0970  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0971  \cf1             # \u28155?\u21152?\u26681?\u31995?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0972  \cf1             if hasattr(self, 'root_parameters') and self.root_parameters:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0973  \cf1                 self.results.update(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0974  \cf1                     '\u24635?\u26681?\u20307?\u31215?(mm\u179?)': round(self.root_parameters['total_volume'], 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0975  \cf1                     '\u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)': round(self.root_parameters['total_surface'], 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0976  \cf1                     '\u27604?\u26681?\u-27265?(mm/mm\u178?)': round(self.root_parameters['specific_root_length'], 4),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0977  \cf1                     '\u24635?\u26681?\u-27265?(\u32047?\u-29791?)(mm)': round(self.root_parameters['total_length'], 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0978  \cf1                     '\u24179?\u22343?\u26681?\u30452?\u24452?(mm)': round(self.root_parameters['avg_diameter'], 3)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0979  \cf1                 \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0980  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0981  \cf1                 # \u28155?\u21152?\u30452?\u24452?\u20998?\u32423?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0982  \cf1                 if 'diameter_distribution' in self.root_parameters:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0983  \cf1                     dist = self.root_parameters['diameter_distribution']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0984  \cf1                     for class_name, class_data in dist.items():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0985  \cf1                         if class_data['count'] > 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0986  \cf1                             self.results[f'\{class_name\}\u25968?\u-28209?'] = class_data['count']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0987  \cf1                             self.results[f'\{class_name\}\u20307?\u31215?(mm\u179?)'] = round(class_data['volume_mm3'], 2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0988  \cf1                             self.results[f'\{class_name\}\u20307?\u31215?\u21344?\u27604?(%)'] = round(class_data['volume_percentage'], 2)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0989  \cf1                             self.results[f'\{class_name\}\u24179?\u22343?\u30452?\u24452?(mm)'] = round(class_data['avg_diameter_mm'], 3)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0990  \cf1             else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0991  \cf1                 # \u22914?\u26524?\u27809?\u26377?\u26681?\u31995?\u21442?\u25968?\u-244?\u28155?\u21152?\u-24872?\u-29788?\u20540?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0992  \cf1                 self.results.update(\{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0993  \cf1                     '\u24635?\u26681?\u20307?\u31215?(mm\u179?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0994  \cf1                     '\u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0995  \cf1                     '\u27604?\u26681?\u-27265?(mm/mm\u178?)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0996  \cf1                     '\u24635?\u26681?\u-27265?(\u32047?\u-29791?)(mm)': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0997  \cf1                     '\u24179?\u22343?\u26681?\u30452?\u24452?(mm)': 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0998  \cf1                 \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 0999  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1000  \cf1             # \u30830?\u20445?\u25152?\u26377?\u30452?\u24452?\u20998?\u32423?\u23383?\u27573?\u-28419?\u23384?\u22312?\u-244?\u21363?\u20351?\u20026?0\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1001  \cf1             for class_name, _, _ in self._get_diameter_classes():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1002  \cf1                 if f'\{class_name\}\u25968?\u-28209?' not in self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1003  \cf1                     self.results[f'\{class_name\}\u25968?\u-28209?'] = 0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1004  \cf1                 if f'\{class_name\}\u20307?\u31215?(mm\u179?)' not in self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1005  \cf1                     self.results[f'\{class_name\}\u20307?\u31215?(mm\u179?)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1006  \cf1                 if f'\{class_name\}\u20307?\u31215?\u21344?\u27604?(%)' not in self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1007  \cf1                     self.results[f'\{class_name\}\u20307?\u31215?\u21344?\u27604?(%)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1008  \cf1                 if f'\{class_name\}\u24179?\u22343?\u30452?\u24452?(mm)' not in self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1009  \cf1                     self.results[f'\{class_name\}\u24179?\u22343?\u30452?\u24452?(mm)'] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1010  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1011  \cf1             return True, "\u21442?\u25968?\u-29791?\u31639?\u23436?\u25104?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1012  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1013  \cf1             return False, f"\u21442?\u25968?\u-29791?\u31639?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1014  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1015  \cf1     def set_scale_from_measurement(self, measured_length_mm, pixel_length):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1016  \cf1         """\u-28646?\u-28729?\u24050?\u30693?\u27979?\u-28209?\u-29762?\u32622?\u27604?\u20363?\u23610?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1017  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1018  \cf1             if pixel_length <= 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1019  \cf1                 return False, "\u20687?\u32032?\u-27265?\u24230?\u24517?\u-26501?\u22823?\u20110?0"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1020  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1021  \cf1             self.pixel_to_mm = measured_length_mm / pixel_length\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1022  \cf1             return True, f"\u27604?\u20363?\u-29762?\u32622?\u25104?\u21151?: \{self.pixel_to_mm:.4f\} mm/\u20687?\u32032?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1023  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1024  \cf1             return False, f"\u-29762?\u32622?\u27604?\u20363?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1025  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1026  \cf1     def set_scale_from_dimensions(self, width_mm, height_mm):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1027  \cf1         """\u-28646?\u-28729?\u22270?\u20687?\u23610?\u23544?\u-29762?\u32622?\u27604?\u20363?\u23610?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1028  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1029  \cf1             if width_mm <= 0 or height_mm <= 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1030  \cf1                 return False, "\u23610?\u23544?\u24517?\u-26501?\u22823?\u20110?0"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1031  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1032  \cf1             # \u20351?\u29992?\u24179?\u22343?\u27604?\u20363?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1033  \cf1             width_scale = width_mm / self.image_width\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1034  \cf1             height_scale = height_mm / self.image_height\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1035  \cf1             self.pixel_to_mm = (width_scale + height_scale) / 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1036  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1037  \cf1             return True, f"\u27604?\u20363?\u-29762?\u32622?\u25104?\u21151?: \{self.pixel_to_mm:.4f\} mm/\u20687?\u32032?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1038  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1039  \cf1             return False, f"\u-29762?\u32622?\u27604?\u20363?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1040  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1041  \cf1     def _draw_text_pil(self, image, text, position, font_size=18, color=(255, 255, 255)):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1042  \cf1         """\u20351?\u29992?PIL\u32472?\u21046?\u20013?\u25991?\u25991?\u26412?\u-248?\u26367?\u20195?cv2.putText\u-244?\u25903?\u25345?CJK\u23383?\u31526?\u-247?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1043  \cf1         img_pil = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1044  \cf1         draw = ImageDraw.Draw(img_pil)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1045  \cf1         font = ImageFont.truetype("C:/Windows/Fonts/simhei.ttf", font_size)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1046  \cf1         draw.text(position, text, font=font, fill=color)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1047  \cf1         return cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1048  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1049  \cf1     def _get_text_size_pil(self, text, font_size=18):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1050  \cf1         """\u-31817?\u21462?PIL\u25991?\u26412?\u23610?\u23544?"""\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1051  \cf1         font = ImageFont.truetype("C:/Windows/Fonts/simhei.ttf", font_size)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1052  \cf1         bbox = font.getbbox(text)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1053  \cf1         return bbox[2] - bbox[0], bbox[3] - bbox[1]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1054  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1055  \cf1     def add_scale_bar(self, image, length_mm=10, position=(50, 50), color=(255, 255, 255), thickness=2):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1056  \cf1         """\u22312?\u22270?\u20687?\u19978?\u28155?\u21152?\u27604?\u20363?\u23610?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1057  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1058  \cf1             # \u-29791?\u31639?\u27604?\u20363?\u23610?\u30340?\u20687?\u32032?\u-27265?\u24230?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1059  \cf1             bar_length_pixels = int(length_mm / self.pixel_to_mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1060  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1061  \cf1             # \u32472?\u21046?\u27604?\u20363?\u23610?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1062  \cf1             x, y = position\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1063  \cf1             cv2.rectangle(image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1064  \cf1                           (x, y - thickness - 5),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1065  \cf1                           (x + bar_length_pixels, y + 15),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1066  \cf1                           (0, 0, 0), -1)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1067  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1068  \cf1             cv2.line(image,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1069  \cf1                      (x, y),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1070  \cf1                      (x + bar_length_pixels, y),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1071  \cf1                      color, thickness)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1072  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1073  \cf1             # \u20351?\u29992?PIL\u32472?\u21046?\u25991?\u26412?\u-248?\u25903?\u25345?\u20013?\u25991?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1074  \cf1             label = f"\{length_mm\} mm"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1075  \cf1             text_w, text_h = self._get_text_size_pil(label, font_size=14)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1076  \cf1             text_x = x + (bar_length_pixels - text_w) // 2\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1077  \cf1             image = self._draw_text_pil(image, label, (text_x, y + 15), font_size=14, color=color)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1078  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1079  \cf1             return image\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1080  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1081  \cf1             print(f"\u28155?\u21152?\u27604?\u20363?\u23610?\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1082  \cf1             return image\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1083  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1084  \cf1     def generate_detailed_report_image(self, output_path, show_scale=True):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1085  \cf1         """\u29983?\u25104?\u-29722?\u32454?\u20998?\u26512?\u25253?\u21578?\u22270?\u20687?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1086  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1087  \cf1             fig = plt.figure(figsize=(18, 12))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1088  \cf1             fig.suptitle(f'\u26681?\u31995?\u-29722?\u32454?\u20998?\u26512?\u25253?\u21578? - \{self.image_name\}', fontsize=18, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1089  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1090  \cf1             # \u21019?\u24314?\u23376?\u22270?\u24067?\u23616?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1091  \cf1             gs = fig.add_gridspec(3, 4, hspace=0.3, wspace=0.3)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1092  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1093  \cf1             # 1. \u21407?\u22987?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1094  \cf1             ax1 = fig.add_subplot(gs[0, 0])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1095  \cf1             ax1.imshow(cv2.cvtColor(self.original_image, cv2.COLOR_BGR2RGB))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1096  \cf1             ax1.set_title('\u21407?\u22987?\u22270?\u20687?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1097  \cf1             ax1.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1098  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1099  \cf1             # \u28155?\u21152?\u22270?\u20687?\u23610?\u23544?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1100  \cf1             info_text = f'\u23610?\u23544?: \{self.image_width\}\u215?\{self.image_height\} \u20687?\u32032?\\n'\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1101  \cf1             info_text += f'\u23454?\u-27067?: \{self.image_width * self.pixel_to_mm:.1f\}\u215?\{self.image_height * self.pixel_to_mm:.1f\} mm'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1102  \cf1             ax1.text(0.02, 0.98, info_text, transform=ax1.transAxes,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1103  \cf1                      fontsize=8, color='white',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1104  \cf1                      verticalalignment='top',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1105  \cf1                      bbox=dict(boxstyle='round', facecolor='black', alpha=0.5))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1106  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1107  \cf1             # 2. \u22686?\u24378?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1108  \cf1             ax2 = fig.add_subplot(gs[0, 1])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1109  \cf1             # \u26681?\u25454?\u26159?\u21542?\u20026?\u25195?\u25551?\u22270?\u20687?\u-28663?\u25321?\u26174?\u31034?\u26041?\u24335?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1110  \cf1             if self.use_scan_optimization and hasattr(self, 'scan_enhanced'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1111  \cf1                 ax2.imshow(self.scan_enhanced, cmap='gray')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1112  \cf1                 ax2.set_title('\u25195?\u25551?\u22270?\u20687?\u22686?\u24378?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1113  \cf1             else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1114  \cf1                 ax2.imshow(self.enhanced_image, cmap='gray')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1115  \cf1                 ax2.set_title('\u23545?\u27604?\u24230?\u22686?\u24378?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1116  \cf1             ax2.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1117  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1118  \cf1             # 3. \u20998?\u21106?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1119  \cf1             ax3 = fig.add_subplot(gs[0, 2])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1120  \cf1             if hasattr(self, 'binary_mask'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1121  \cf1                 ax3.imshow(self.binary_mask, cmap='gray')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1122  \cf1                 method_title = '\u25195?\u25551?\u22270?\u20687?\u20998?\u21106?' if self.use_scan_optimization else '\u20998?\u21106?\u32467?\u26524?\u-248?\u22823?\u27941?\u27861?\u-247?'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1123  \cf1                 ax3.set_title(method_title, fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1124  \cf1                 ax3.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1125  \cf1                 ax3.text(0.02, 0.98, f'\u21306?\u22495?\u25968?: \{self.filtered_count\}',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1126  \cf1                          transform=ax3.transAxes, fontsize=8, color='white',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1127  \cf1                          verticalalignment='top',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1128  \cf1                          bbox=dict(boxstyle='round', facecolor='black', alpha=0.5))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1129  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1130  \cf1             # 4. \u-28729?\u28388?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1131  \cf1             ax4 = fig.add_subplot(gs[0, 3])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1132  \cf1             if hasattr(self, 'filtered_mask'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1133  \cf1                 ax4.imshow(self.filtered_mask, cmap='gray')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1134  \cf1                 filter_title = '\u25195?\u25551?\u22270?\u20687?\u-28729?\u28388?' if self.use_scan_optimization else '\u-28729?\u28388?\u32467?\u26524?'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1135  \cf1                 ax4.set_title(filter_title, fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1136  \cf1                 ax4.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1137  \cf1                 filter_info = f"\u-28729?\u28388?\u21518?: \{self.filtered_count\}\u20010?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1138  \cf1                 if self.use_scan_optimization:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1139  \cf1                     filter_info += " (\u25195?\u25551?\u20248?\u21270?)"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1140  \cf1                 ax4.text(0.02, 0.98, filter_info,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1141  \cf1                          transform=ax4.transAxes, fontsize=8, color='white',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1142  \cf1                          verticalalignment='top',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1143  \cf1                          bbox=dict(boxstyle='round', facecolor='blue', alpha=0.5))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1144  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1145  \cf1             # 5. \u26681?\u31995?\u-29791?\u25968?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1146  \cf1             ax5 = fig.add_subplot(gs[1, :2])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1147  \cf1             if hasattr(self, 'color_map'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1148  \cf1                 ax5.imshow(self.color_map)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1149  \cf1                 ax5.set_title(f'\u26681?\u31995?\u-29791?\u25968? (\{self.root_count\}\u20010?)', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1150  \cf1                 ax5.axis('off')\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1151  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1152  \cf1             # 6. \u32467?\u26524?\u21472?\u21152?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1153  \cf1             ax6 = fig.add_subplot(gs[1, 2:])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1154  \cf1             if hasattr(self, 'filtered_mask'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1155  \cf1                 overlay = self.original_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1156  \cf1                 overlay[self.filtered_mask > 0] = [0, 255, 0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1157  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1158  \cf1                 # \u28155?\u21152?\u27604?\u20363?\u23610?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1159  \cf1                 if show_scale:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1160  \cf1                     overlay = self.add_scale_bar(overlay, length_mm=self.scale_bar_length_mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1161  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1162  \cf1                 ax6.imshow(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1163  \cf1                 ax6.set_title('\u26816?\u27979?\u32467?\u26524?\u21472?\u21152?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1164  \cf1                 ax6.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1165  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1166  \cf1                 # \u28155?\u21152?\u21442?\u25968?\u25688?\u-30335?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1167  \cf1                 if self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1168  \cf1                     summary = f"\u26681?\u31995?\u25968?\u-28209?: \{self.results.get('\u26681?\u31995?\u25968?\u-28209?', 0)\}\\n"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1169  \cf1                     summary += f"\u24635?\u26681?\u-27265?: \{self.results.get('\u24635?\u26681?\u-27265?(mm)', 0):.1f\} mm\\n"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1170  \cf1                     summary += f"\u26681?\u31995?\u-26782?\u31215?: \{self.results.get('\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', 0):.1f\} mm\u178?\\n"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1171  \cf1                     summary += f"\u24635?\u26681?\u20307?\u31215?: \{self.results.get('\u24635?\u26681?\u20307?\u31215?(mm\u179?)', 0):.1f\} mm\u179?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1172  \cf1                     ax6.text(0.02, 0.98, summary, transform=ax6.transAxes,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1173  \cf1                              fontsize=8, color='white',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1174  \cf1                              verticalalignment='top',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1175  \cf1                              bbox=dict(boxstyle='round', facecolor='green', alpha=0.7))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1176  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1177  \cf1             # 7. \u30452?\u24452?\u20998?\u24067?\u26609?\u29366?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1178  \cf1             ax7 = fig.add_subplot(gs[2, 0])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1179  \cf1             if hasattr(self, 'root_parameters') and 'diameter_distribution' in self.root_parameters:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1180  \cf1                 dist = self.root_parameters['diameter_distribution']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1181  \cf1                 classes = list(dist.keys())\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1182  \cf1                 volumes = [dist[c]['volume_mm3'] for c in classes]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1183  \cf1                 percentages = [dist[c]['volume_percentage'] for c in classes]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1184  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1185  \cf1                 color_cycle = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1186  \cf1                                '#ffb3e6', '#c2f0c2', '#ffccb3', '#b3b3ff', '#ffb366']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1187  \cf1                 colors = list(itertools.islice(itertools.cycle(color_cycle), len(classes)))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1188  \cf1                 bars = ax7.bar(classes, volumes, color=colors)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1189  \cf1                 ax7.set_title('\u26681?\u31995?\u30452?\u24452?\u20998?\u32423?\u20307?\u31215?\u20998?\u24067?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1190  \cf1                 ax7.set_ylabel('\u20307?\u31215? (mm\u179?)', fontsize=10)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1191  \cf1                 ax7.tick_params(axis='x', rotation=45)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1192  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1193  \cf1                 # \u22312?\u26609?\u29366?\u22270?\u19978?\u28155?\u21152?\u30334?\u20998?\u27604?\u26631?\u31614?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1194  \cf1                 for bar, percentage in zip(bars, percentages):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1195  \cf1                     height = bar.get_height()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1196  \cf1                     ax7.text(bar.get_x() + bar.get_width() / 2., height + max(volumes) * 0.01,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1197  \cf1                              f'\{percentage\}%', ha='center', va='bottom', fontsize=9)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1198  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1199  \cf1             # 8. \u26681?\u31995?\u21442?\u25968?\u27719?\u24635?\u-30616?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1200  \cf1             ax8 = fig.add_subplot(gs[2, 1:])\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1201  \cf1             ax8.axis('off')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1202  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1203  \cf1             if hasattr(self, 'root_parameters') and self.root_parameters:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1204  \cf1                 # \u21019?\u24314?\u21442?\u25968?\u-30616?\u26684?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1205  \cf1                 params_data = [\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1206  \cf1                     ['\u21442?\u25968?', '\u25968?\u20540?', '\u21333?\u20301?'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1207  \cf1                     ['\u24635?\u26681?\u-27265?', f"\{self.root_parameters['total_length']:.1f\}", 'mm'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1208  \cf1                     ['\u26681?\u31995?\u-26782?\u31215?', f"\{self.root_parameters['total_area']:.1f\}", 'mm\u178?'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1209  \cf1                     ['\u24635?\u26681?\u20307?\u31215?', f"\{self.root_parameters['total_volume']:.1f\}", 'mm\u179?'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1210  \cf1                     ['\u24635?\u26681?\u-30616?\u-26782?\u31215?', f"\{self.root_parameters['total_surface']:.1f\}", 'mm\u178?'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1211  \cf1                     ['\u24179?\u22343?\u26681?\u30452?\u24452?', f"\{self.root_parameters['avg_diameter']:.3f\}", 'mm'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1212  \cf1                     ['\u27604?\u26681?\u-27265?', f"\{self.root_parameters['specific_root_length']:.4f\}", 'mm/mm\u178?']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1213  \cf1                 ]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1214  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1215  \cf1                 table = ax8.table(cellText=params_data, loc='center', cellLoc='center')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1216  \cf1                 table.auto_set_font_size(False)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1217  \cf1                 table.set_fontsize(9)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1218  \cf1                 table.scale(1, 1.5)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1219  \cf1                 ax8.set_title('\u26681?\u31995?\u21442?\u25968?\u27719?\u24635?', fontsize=12, fontweight='bold')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1220  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1221  \cf1             plt.tight_layout(rect=[0, 0, 1, 0.96])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1222  \cf1             plt.savefig(output_path, dpi=200, bbox_inches='tight', facecolor='white')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1223  \cf1             plt.close()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1224  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1225  \cf1             return True, "\u-29722?\u32454?\u25253?\u21578?\u22270?\u20687?\u29983?\u25104?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1226  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1227  \cf1             return False, f"\u25253?\u21578?\u22270?\u20687?\u29983?\u25104?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1228  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1229  \cf1     def export_overlay_image(self, output_path, show_scale=True):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1230  \cf1         """\u23548?\u20986?\u21472?\u21152?\u32467?\u26524?\u22270?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1231  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1232  \cf1             if not hasattr(self, 'filtered_mask'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1233  \cf1                 return False, "\u27809?\u26377?\u21487?\u23548?\u20986?\u30340?\u32467?\u26524?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1234  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1235  \cf1             # \u21019?\u24314?\u21472?\u21152?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1236  \cf1             overlay = self.original_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1237  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1238  \cf1             # \u32472?\u21046?\u26816?\u27979?\u21040?\u30340?\u26681?\u31995?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1239  \cf1             overlay[self.filtered_mask > 0] = [0, 255, 0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1240  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1241  \cf1             # \u28155?\u21152?\u27604?\u20363?\u23610?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1242  \cf1             if show_scale:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1243  \cf1                 overlay = self.add_scale_bar(overlay, length_mm=self.scale_bar_length_mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1244  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1245  \cf1             # \u20351?\u29992?PIL\u32472?\u21046?\u20013?\u25991?\u25991?\u26412?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1246  \cf1             scan_info = " [\u25195?\u25551?\u20248?\u21270?]" if self.use_scan_optimization else ""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1247  \cf1             info_text = f"\{self.image_name\} | \u26681?\u31995?\u25968?\u-28209?: \{self.root_count\}\{scan_info\} | \{datetime.now().strftime('%Y-%m-%d %H:%M')\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1248  \cf1             overlay = self._draw_text_pil(overlay, info_text, (10, 10), font_size=18)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1249  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1250  \cf1             # \u28155?\u21152?\u21442?\u25968?\u20449?\u24687?\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1251  \cf1             if hasattr(self, 'root_parameters'):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1252  \cf1                 param_text = f"\u24635?\u26681?\u-27265?: \{self.root_parameters['total_length']:.1f\}mm | "\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1253  \cf1                 param_text += f"\u20307?\u31215?: \{self.root_parameters['total_volume']:.1f\}mm\u179?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1254  \cf1                 overlay = self._draw_text_pil(overlay, param_text, (10, 38), font_size=16)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1255  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1256  \cf1             # \u20445?\u23384?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1257  \cf1             cv2.imwrite(output_path, overlay)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1258  \cf1             return True, "\u21472?\u21152?\u22270?\u20687?\u23548?\u20986?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1259  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1260  \cf1             return False, f"\u21472?\u21152?\u22270?\u20687?\u23548?\u20986?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1261  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1262  \cf1     def save_results_csv(self, output_path):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1263  \cf1         """\u20445?\u23384?\u32467?\u26524?\u20026?CSV - \u22686?\u24378?\u29256?\u-244?\u-28781?\u20986?\u25152?\u26377?\u26681?\u31995?\u21442?\u25968?"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1264  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1265  \cf1             # \u23450?\u20041?\u25152?\u26377?\u21487?\u-32515?\u30340?\u23383?\u27573?\u-244?\u30830?\u20445?\u21363?\u20351?\u20540?\u20026?0\u20063?\u20445?\u30041?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1266  \cf1             all_fields = [\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1267  \cf1                 '\u22270?\u20687?\u21517?\u31216?', '\u20998?\u26512?\u26102?\u-27148?', '\u20687?\u32032?\u-28820?\u25442?\u31995?\u25968?(mm/\u20687?\u32032?)', '\u22270?\u20687?\u23485?\u24230?(mm)', '\u22270?\u20687?\u-25896?\u24230?(mm)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1268  \cf1                 '\u26681?\u31995?\u25968?\u-28209?', '\u24635?\u26681?\u-27265?(mm)', '\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', '\u22270?\u20687?\u23485?\u24230?(\u20687?\u32032?)', '\u22270?\u20687?\u-25896?\u24230?(\u20687?\u32032?)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1269  \cf1                 '\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', '\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', '\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', '\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)', '\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1270  \cf1                 '\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)', '\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)', '\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)', '\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1271  \cf1                 '\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)', '\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)', '\u24179?\u22343?\u26681?\u31995?\u30452?\u24452?(mm)', '\u30452?\u24452?\u26631?\u20934?\u24046?(mm)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1272  \cf1                 '\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', '\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', '\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)', '\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1273  \cf1                 '\u24635?\u26681?\u20307?\u31215?(mm\u179?)', '\u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)', '\u27604?\u26681?\u-27265?(mm/mm\u178?)', '\u24635?\u26681?\u-27265?(\u32047?\u-29791?)(mm)', '\u24179?\u22343?\u26681?\u30452?\u24452?(mm)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1274  \cf1             ]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1275  \cf1             # \u21160?\u24577?\u28155?\u21152?\u30452?\u24452?\u20998?\u32423?\u23383?\u27573?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1276  \cf1             for class_name, _, _ in self._get_diameter_classes():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1277  \cf1                 keys = self._get_class_suffix_keys(class_name)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1278  \cf1                 all_fields.extend([keys['count'], keys['volume'], keys['volume_pct'], keys['avg_diam']])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1279  \cf1             all_fields.extend(['\u20998?\u26512?\u31867?\u22411?', '\u25195?\u25551?\u20248?\u21270?'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1280  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1281  \cf1             # \u20934?\u22791?\u25968?\u25454? - \u30830?\u20445?\u25152?\u26377?\u23383?\u27573?\u-28419?\u23384?\u22312?\u-244?\u21363?\u20351?\u20540?\u20026?0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1282  \cf1             data = \{\}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1283  \cf1             for field in all_fields:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1284  \cf1                 if field in self.results:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1285  \cf1                     data[field] = self.results[field]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1286  \cf1                 elif field == '\u20998?\u26512?\u31867?\u22411?':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1287  \cf1                     data[field] = '\u24635?\u20307?'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1288  \cf1                 elif field == '\u25195?\u25551?\u20248?\u21270?':\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1289  \cf1                     data[field] = '\u26159?' if self.use_scan_optimization else '\u21542?'\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1290  \cf1                 else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1291  \cf1                     # \u23545?\u20110?\u25968?\u20540?\u23383?\u27573?\u-244?\u-29762?\u32622?\u20026?0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1292  \cf1                     if '\u25968?\u-28209?' in field or '\u20307?\u31215?' in field or '\u-26782?\u31215?' in field or '\u-27265?\u24230?' in field or '\u30452?\u24452?' in field or '\u27604?\u26681?\u-27265?' in field:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1293  \cf1                         data[field] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1294  \cf1                     elif '\u21344?\u27604?' in field:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1295  \cf1                         data[field] = 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1296  \cf1                     else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1297  \cf1                         data[field] = ''\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1298  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1299  \cf1             # \u22914?\u26524?\u25991?\u20214?\u23384?\u22312?\u-244?\u-28675?\u21152?\u27169?\u24335?\u-229?\u21542?\u21017?\u21019?\u24314?\u26032?\u25991?\u20214?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1300  \cf1             file_exists = os.path.isfile(output_path)\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1301  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1302  \cf1             with open(output_path, 'a', newline='', encoding='utf-8-sig') as f:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1303  \cf1                 writer = csv.DictWriter(f, fieldnames=all_fields)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1304  \cf1                 if not file_exists:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1305  \cf1                     writer.writeheader()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1306  \cf1                 writer.writerow(data)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1307  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1308  \cf1             # \u20445?\u23384?\u26681?\u31995?\u20998?\u32423?\u-29722?\u32454?\u25968?\u25454?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1309  \cf1             if hasattr(self, 'root_parameters') and 'diameter_distribution' in self.root_parameters:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1310  \cf1                 detail_path = output_path.replace('.csv', '_\u20998?\u32423?\u-29722?\u32454?.csv')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1311  \cf1                 with open(detail_path, 'w', newline='', encoding='utf-8-sig') as f:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1312  \cf1                     writer = csv.writer(f)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1313  \cf1                     writer.writerow(['\u26681?\u31995?\u30452?\u24452?\u20998?\u32423?\u-29722?\u32454?\u25253?\u21578?'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1314  \cf1                     writer.writerow(['\u22270?\u20687?\u21517?\u31216?', self.image_name])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1315  \cf1                     writer.writerow(['\u20998?\u26512?\u26102?\u-27148?', datetime.now().strftime('%Y-%m-%d %H:%M:%S')])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1316  \cf1                     writer.writerow(['\u25195?\u25551?\u20248?\u21270?', '\u26159?' if self.use_scan_optimization else '\u21542?'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1317  \cf1                     writer.writerow([])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1318  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1319  \cf1                     writer.writerow(['\u30452?\u24452?\u20998?\u32423?', '\u25968?\u-28209?', '\u20307?\u31215?(mm\u179?)', '\u20307?\u31215?\u21344?\u27604?(%)',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1320  \cf1                                      '\u24179?\u22343?\u30452?\u24452?(mm)', '\u26368?\u23567?\u30452?\u24452?(mm)', '\u26368?\u22823?\u30452?\u24452?(mm)'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1321  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1322  \cf1                     dist = self.root_parameters['diameter_distribution']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1323  \cf1                     for class_name, _, _ in self._get_diameter_classes():\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1324  \cf1                         class_data = dist.get(class_name, \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1325  \cf1                             'count': 0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1326  \cf1                             'volume_mm3': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1327  \cf1                             'volume_percentage': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1328  \cf1                             'avg_diameter_mm': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1329  \cf1                             'min_diameter_mm': 0.0,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1330  \cf1                             'max_diameter_mm': 0.0\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1331  \cf1                         \})\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1332  \cf1                         writer.writerow([\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1333  \cf1                             class_name,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1334  \cf1                             class_data['count'],\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1335  \cf1                             round(class_data['volume_mm3'], 3),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1336  \cf1                             round(class_data['volume_percentage'], 2),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1337  \cf1                             round(class_data['avg_diameter_mm'], 3),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1338  \cf1                             round(class_data['min_diameter_mm'], 3),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1339  \cf1                             round(class_data['max_diameter_mm'], 3)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1340  \cf1                         ])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1341  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1342  \cf1                     # \u28155?\u21152?\u27719?\u24635?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1343  \cf1                     writer.writerow([])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1344  \cf1                     writer.writerow(['\u21442?\u25968?\u27719?\u24635?'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1345  \cf1                     writer.writerow(['\u24635?\u26681?\u31995?\u25968?\u-28209?', self.root_count])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1346  \cf1                     writer.writerow(['\u24635?\u26681?\u20307?\u31215?(mm\u179?)', round(self.root_parameters.get('total_volume', 0), 2)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1347  \cf1                     writer.writerow(['\u24635?\u26681?\u-27265?(mm)', round(self.root_parameters.get('total_length', 0), 2)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1348  \cf1                     writer.writerow(['\u24635?\u26681?\u-30616?\u-26782?\u31215?(mm\u178?)', round(self.root_parameters.get('total_surface', 0), 2)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1349  \cf1                     writer.writerow(['\u24179?\u22343?\u26681?\u30452?\u24452?(mm)', round(self.root_parameters.get('avg_diameter', 0), 3)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1350  \cf1                     writer.writerow(['\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', round(self.root_parameters.get('total_area', 0), 2)])\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1351  \cf1                     writer.writerow(['\u27604?\u26681?\u-27265?(mm/mm\u178?)', round(self.root_parameters.get('specific_root_length', 0), 4)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1352  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1353  \cf1                     # \u28155?\u21152?\u23610?\u23544?\u20998?\u24067?\u20449?\u24687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1354  \cf1                     writer.writerow([])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1355  \cf1                     writer.writerow(['\u23610?\u23544?\u20998?\u24067?\u32479?\u-29791?'])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1356  \cf1                     writer.writerow(['\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', self.results.get('\u26368?\u22823?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1357  \cf1                     writer.writerow(['\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', self.results.get('\u26368?\u23567?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1358  \cf1                     writer.writerow(['\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', self.results.get('\u24179?\u22343?\u26681?\u31995?\u-26782?\u31215?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1359  \cf1                     writer.writerow(['\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)', self.results.get('\u-26782?\u31215?\u26631?\u20934?\u24046?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1360  \cf1                     writer.writerow(['\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)', self.results.get('\u-26782?\u31215?\u21464?\u24322?\u31995?\u25968?(%)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1361  \cf1                     writer.writerow(['\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)', self.results.get('\u26368?\u22823?\u26681?\u31995?\u-27265?\u24230?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1362  \cf1                     writer.writerow(['\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)', self.results.get('\u26368?\u23567?\u26681?\u31995?\u-27265?\u24230?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1363  \cf1                     writer.writerow(['\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)', self.results.get('\u24179?\u22343?\u26681?\u31995?\u-27265?\u24230?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1364  \cf1                     writer.writerow(['\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)', self.results.get('\u-27265?\u24230?\u26631?\u20934?\u24046?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1365  \cf1                     writer.writerow(['\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)', self.results.get('\u26368?\u22823?\u26681?\u31995?\u30452?\u24452?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1366  \cf1                     writer.writerow(['\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)', self.results.get('\u26368?\u23567?\u26681?\u31995?\u30452?\u24452?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1367  \cf1                     writer.writerow(['\u30452?\u24452?\u26631?\u20934?\u24046?(mm)', self.results.get('\u30452?\u24452?\u26631?\u20934?\u24046?(mm)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1368  \cf1                     writer.writerow(['\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', self.results.get('\u24635?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1369  \cf1                     writer.writerow(['\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', self.results.get('\u24179?\u22343?\u26681?\u31995?\u20307?\u31215?(mm\u179?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1370  \cf1                     writer.writerow(['\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)', self.results.get('\u24635?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1371  \cf1                     writer.writerow(['\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)', self.results.get('\u24179?\u22343?\u26681?\u31995?\u-30616?\u-26782?\u31215?(mm\u178?)', 0)])\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1372  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1373  \cf1             return True, "CSV\u20445?\u23384?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1374  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1375  \cf1             return False, f"CSV\u20445?\u23384?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1376  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1377  \cf1     def save_results_json(self, output_path):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1378  \cf1         """\u20445?\u23384?\u32467?\u26524?\u20026?JSON"""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1379  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1380  \cf1             # \u-29701?\u21462?\u29616?\u26377?\u25968?\u25454?\u25110?\u21019?\u24314?\u26032?\u21015?\u-30616?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1381  \cf1             if os.path.exists(output_path):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1382  \cf1                 with open(output_path, 'r', encoding='utf-8') as f:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1383  \cf1                     data = json.load(f)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1384  \cf1             else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1385  \cf1                 data = []\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1386  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1387  \cf1             # \u21019?\u24314?\u23436?\u25972?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1388  \cf1             complete_result = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1389  \cf1                 '\u24635?\u20307?\u32467?\u26524?': self.results,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1390  \cf1                 '\u26681?\u31995?\u21442?\u25968?': self.root_parameters,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1391  \cf1                 '\u20998?\u26512?\u26102?\u-27148?': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1392  \cf1                 '\u22270?\u20687?\u20449?\u24687?': \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1393  \cf1                     '\u25991?\u20214?\u21517?': self.image_name,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1394  \cf1                     '\u23610?\u23544?_\u20687?\u32032?': f"\{self.image_width\}x\{self.image_height\}",\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1395  \cf1                     '\u23610?\u23544?_mm': f"\{self.image_width * self.pixel_to_mm:.1f\}x\{self.image_height * self.pixel_to_mm:.1f\}",\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1396  \cf1                     '\u20687?\u32032?\u-28820?\u25442?\u31995?\u25968?': self.pixel_to_mm\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1397  \cf1                 \},\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1398  \cf1                 '\u25195?\u25551?\u20248?\u21270?': self.use_scan_optimization,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1399  \cf1                 '\u25195?\u25551?\u21442?\u25968?': self.scan_params if self.use_scan_optimization else None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1400  \cf1             \}\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1401  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1402  \cf1             # \u28155?\u21152?\u26032?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1403  \cf1             data.append(complete_result)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1404  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1405  \cf1             # \u20445?\u23384?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1406  \cf1             with open(output_path, 'w', encoding='utf-8') as f:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1407  \cf1                 json.dump(data, f, indent=2, ensure_ascii=False)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1408  \cf1             return True, "JSON\u20445?\u23384?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1409  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1410  \cf1             return False, f"JSON\u20445?\u23384?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1411  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1412  \cf1     # \u-26791?\u24577?\u26041?\u27861?\u29992?\u20110?\u24182?\u-30644?\u22788?\u29702?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1413  \cf1     @staticmethod\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1414  \cf1     def analyze_single_image_static(params):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1415  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1416  \cf1         \u-26791?\u24577?\u26041?\u27861?\u-230?\u20998?\u26512?\u21333?\u20010?\u22270?\u20687?\u-248?\u29992?\u20110?\u22810?\u-28709?\u31243?\u-247?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1417  \cf1         \u21442?\u25968?params\u26159?\u19968?\u20010?\u21253?\u21547?\u25152?\u26377?\u24517?\u-30335?\u21442?\u25968?\u30340?\u23383?\u20856?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1418  \cf1         \u-28716?\u22238?: (\u25104?\u21151?\u26631?\u24535?, \u32467?\u26524?\u23383?\u20856?, \u-27367?\u-29713?\u20449?\u24687?)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1419  \cf1         """\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1420  \cf1         try:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1421  \cf1             # \u-29776?\u24405?\u20869?\u23384?\u20351?\u29992?\u24773?\u20917?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1422  \cf1             process = psutil.Process(os.getpid())\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1423  \cf1             initial_memory = process.memory_info().rss / 1024 / 1024  # MB\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1424  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1425  \cf1             image_path = params['image_path']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1426  \cf1             pixel_to_mm = params['pixel_to_mm']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1427  \cf1             seg_method = params['seg_method']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1428  \cf1             min_length = params['min_length']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1429  \cf1             min_area = params['min_area']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1430  \cf1             min_aspect_ratio = params['min_aspect_ratio']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1431  \cf1             min_root_size = params['min_root_size']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1432  \cf1             output_dir = params.get('output_dir', os.path.dirname(image_path))\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1433  \cf1             use_scan_optimization = params.get('use_scan_optimization', False)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1434  \cf1             scan_background_type = params.get('scan_background_type', 'auto')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1435  \cf1             scan_quality = params.get('scan_quality', 'auto')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1436  \cf1             roi_active = params.get('roi_active', None)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1437  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1438  \cf1             # \u21019?\u24314?\u20998?\u26512?\u22120?\u23454?\u20363?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1439  \cf1             analyzer = RootSystemAnalyzer(pixel_to_mm)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1440  \cf1             analyzer.roi_active = roi_active\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1441  \cf1             if params.get('diameter_classes') is not None:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1442  \cf1                 analyzer.diameter_classes = params['diameter_classes']\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1443  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1444  \cf1             # \u-29762?\u32622?\u25195?\u25551?\u20248?\u21270?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1445  \cf1             if use_scan_optimization:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1446  \cf1                 analyzer.enable_scan_optimization(True)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1447  \cf1                 analyzer.set_scan_background_type(scan_background_type)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1448  \cf1                 analyzer.set_scan_quality(scan_quality)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1449  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1450  \cf1             # \u21152?\u-28803?\u22270?\u20687?\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1451  \cf1             success, message = analyzer.load_image(image_path)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1452  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1453  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1454  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1455  \cf1             # \u20998?\u21106? - \u20165?\u20351?\u29992?\u22823?\u27941?\u27861?\u25110?\u25195?\u25551?\u20248?\u21270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1456  \cf1             success, message = analyzer.segment_roots(method='otsu')\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1457  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1458  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1459  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1460  \cf1             # \u-28729?\u28388?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1461  \cf1             success, message = analyzer.filter_non_roots(\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1462  \cf1                 min_length=min_length,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1463  \cf1                 min_area=min_area,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1464  \cf1                 min_aspect_ratio=min_aspect_ratio\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1465  \cf1             )\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1466  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1467  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1468  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1469  \cf1             # \u-29791?\u25968?\u26681?\u31995?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1470  \cf1             success, message = analyzer.count_roots(min_size=min_root_size)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1471  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1472  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1473  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1474  \cf1             # \u-29791?\u31639?\u26681?\u31995?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1475  \cf1             success, message = analyzer.calculate_root_parameters()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1476  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1477  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1478  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1479  \cf1             # \u-29791?\u31639?\u25152?\u26377?\u21442?\u25968?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1480  \cf1             success, message = analyzer.calculate_parameters()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1481  \cf1             if not success:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1482  \cf1                 return False, \{\}, message\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1483  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1484  \cf1             # \u20934?\u22791?\u32467?\u26524?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1485  \cf1             result = \{\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1486  \cf1                 'success': True,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1487  \cf1                 'analyzer': analyzer,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1488  \cf1                 'image_name': analyzer.image_name,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1489  \cf1                 'results': analyzer.results.copy(),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1490  \cf1                 'root_parameters': analyzer.root_parameters.copy(),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1491  \cf1                 'filter_stats': analyzer.filter_stats.copy(),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1492  \cf1                 'root_count': analyzer.root_count,\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1493  \cf1                 'total_length': analyzer.root_parameters.get('total_length', 0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1494  \cf1                 'total_area': analyzer.root_parameters.get('total_area', 0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1495  \cf1                 'total_volume': analyzer.root_parameters.get('total_volume', 0),\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1496  \cf1                 'use_scan_optimization': use_scan_optimization\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1497  \cf1             \}\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1498  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1499  \cf1             # \u20026?\u27599?\u20010?\u22270?\u20687?\u29983?\u25104?\u21472?\u21152?\u22270? - \u20851?\u-27346?\u20462?\u22797?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1500  \cf1             try:\par
+\page
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1501  \cf1                 # \u30830?\u20445?\u-28781?\u20986?\u30446?\u24405?\u23384?\u22312?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1502  \cf1                 os.makedirs(output_dir, exist_ok=True)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1503  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1504  \cf1                 # \u29983?\u25104?\u21472?\u21152?\u22270?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1505  \cf1                 base_name = os.path.splitext(os.path.basename(image_path))[0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1506  \cf1                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1507  \cf1                 overlay_path = os.path.join(output_dir, f"\{base_name\}_\u32467?\u26524?\u21472?\u21152?_\{timestamp\}.png")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1508  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1509  \cf1                 # \u26816?\u26597?\u26159?\u21542?\u26377?\u-28729?\u28388?\u21518?\u30340?\u25513?\u30721?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1510  \cf1                 if hasattr(analyzer, 'filtered_mask') and np.sum(analyzer.filtered_mask) > 0:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1511  \cf1                     # \u29983?\u25104?\u21472?\u21152?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1512  \cf1                     overlay = analyzer.original_image.copy()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1513  \cf1                     overlay[analyzer.filtered_mask > 0] = [0, 255, 0]\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1514  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1515  \cf1                     # \u20351?\u29992?PIL\u32472?\u21046?\u20013?\u25991?\u25991?\u26412?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1516  \cf1                     scan_info = " [\u25195?\u25551?\u20248?\u21270?]" if use_scan_optimization else ""\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1517  \cf1                     info_text = f"\{analyzer.image_name\} | \u26681?\u31995?\u25968?\u-28209?: \{analyzer.root_count\}\{scan_info\} | \{datetime.now().strftime('%Y-%m-%d %H:%M')\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1518  \cf1                     overlay = analyzer._draw_text_pil(overlay, info_text, (10, 10), font_size=18)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1519  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1520  \cf1                     # \u20445?\u23384?\u22270?\u20687?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1521  \cf1                     cv2.imwrite(overlay_path, overlay)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1522  \cf1                     result['overlay_path'] = overlay_path\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1523  \cf1                     print(f"\u24050?\u29983?\u25104?\u21472?\u21152?\u22270?: \{overlay_path\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1524  \cf1                 else:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1525  \cf1                     print(f"\u27809?\u26377?\u26816?\u27979?\u21040?\u26681?\u31995?\u-244?\u-29197?\u-28729?\u21472?\u21152?\u22270?\u29983?\u25104?: \{image_path\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1526  \cf1                     result['overlay_path'] = None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1527  \cf1             except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1528  \cf1                 print(f"\u29983?\u25104?\u21472?\u21152?\u22270?\u22833?\u-29403?: \{e\}")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1529  \cf1                 result['overlay_path'] = None\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1530  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1531  \cf1             # \u28165?\u29702?\u20998?\u26512?\u22120?\u20013?\u30340?\u22823?\u23545?\u-29599?\u20197?\u-32126?\u30465?\u20869?\u23384?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1532  \cf1             for attr in ['original_image', 'enhanced_image', 'binary_mask',\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1533  \cf1                          'filtered_mask', 'color_map', 'gray_image', 'display_image']:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1534  \cf1                 if hasattr(analyzer, attr):\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1535  \cf1                     setattr(analyzer, attr, None)\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1536  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1537  \cf1             # \u24378?\u21046?\u22403?\u22334?\u22238?\u25910?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1538  \cf1             gc.collect()\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1539  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1540  \cf1             # \u-29776?\u24405?\u26368?\u32456?\u20869?\u23384?\u20351?\u29992?\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1541  \cf1             final_memory = process.memory_info().rss / 1024 / 1024  # MB\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1542  \cf1             memory_used = final_memory - initial_memory\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1543  \cf1             print(f"\u-28709?\u31243? \{os.getpid()\} \u20869?\u23384?\u20351?\u29992?: \{initial_memory:.1f\}MB -> \{final_memory:.1f\}MB (\u916?\{memory_used:.1f\}MB)")\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1544  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1545  \cf1             return True, result, "\u20998?\u26512?\u25104?\u21151?"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1546  \cf1 \par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1547  \cf1         except Exception as e:\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1548  \cf1             return False, \{\}, f"\u20998?\u26512?\u22833?\u-29403?: \{str(e)\}"\par
+\pard\ql\li0\ri0\widctlpar\f1\fs18\cf3 1549  \cf1 \par
+}

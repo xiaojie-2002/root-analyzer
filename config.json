@@ -1,0 +1,18 @@
+{
+  "output_dir": "C:\\Users\\30936/Desktop/根系分析结果",
+  "image_path": "D:/datas/scan image-2025/04-1/0419-04.jpg",
+  "pixel_to_mm": 0.08466666666666667,
+  "min_length": 4,
+  "min_area": 4,
+  "min_aspect_ratio": 1.0,
+  "min_root_size": 20,
+  "known_length": 10.0,
+  "pixel_length": 100,
+  "image_width_mm": 100.0,
+  "image_height_mm": 100.0,
+  "scan_optimization": false,
+  "scan_background_type": "auto",
+  "scan_quality": "auto",
+  "max_workers": 5,
+  "batch_timeout": 660
+}
